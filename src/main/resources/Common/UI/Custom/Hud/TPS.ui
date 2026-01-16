@@ -1,0 +1,16 @@
+Group {
+  LayoutMode: Right;
+  Anchor: (Top: 5, Height: 20);
+
+  Group #MyPanel {
+    Background: #000000(0.3);
+    Anchor: (Top: 5, Right: 5, Width: 180, Height: 30);
+    Padding: (Horizontal: 3, Vertical: 3);
+    LayoutMode: Center;
+
+    Label #MyLabel {
+      Style: (FontSize: 12, Alignment: Center);
+      Text: "MyText";
+    }
+  }
+}
