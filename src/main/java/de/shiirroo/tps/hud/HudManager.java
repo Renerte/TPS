@@ -45,7 +45,6 @@ public class HudManager extends TickingSystem<EntityStore> {
         try {
             Class<?> multiHudClass = Class.forName("com.buuz135.mhud.MultipleHUD");
             Object multiHudInstance = multiHudClass.getMethod("getInstance").invoke(null);
-            logger.info("Trying to set up HUD with MultipleHUD");
             multiHudClass.getMethod("setCustomHud", Player.class, PlayerRef.class, String.class, CustomUIHud.class)
                     .invoke(multiHudInstance, player, playerRef, "TpsHud", new TpsHud(playerRef));
         } catch (ClassNotFoundException e) {
@@ -63,8 +62,9 @@ public class HudManager extends TickingSystem<EntityStore> {
         playersWithHud.remove(playerRef);
         try {
             Class<?> multiHudClass = Class.forName("com.buuz135.mhud.MultipleHUD");
-            Object multiHudInstance = multiHudClass.getMethod("getInstance").invoke(null);
-            multiHudClass.getMethod("hideCustomHud", Player.class, PlayerRef.class, String.class).invoke(multiHudInstance, player, playerRef, "TpsHud");
+            Object multiHudInstance = multiHudClass.getMethod("getInstance").invoke(null);;
+            multiHudClass.getMethod("setCustomHud", Player.class, PlayerRef.class, String.class, CustomUIHud.class)
+                    .invoke(multiHudInstance, player, playerRef, "TpsHud", new NoneHud(playerRef));
         } catch (ClassNotFoundException e) {
             player.getHudManager().setCustomHud(playerRef, new NoneHud(playerRef));
         } catch (Exception e) {
