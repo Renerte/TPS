@@ -57,6 +57,13 @@ public class HudManager extends TickingSystem<EntityStore> {
         playersWithHud.add(playerRef);
     }
 
+    public void removePlayerRef(PlayerRef playerRef) {
+        if (!playersWithHud.contains(playerRef)) return;
+        playersWithHud.remove(playerRef);
+    }
+
+
+
     public void removePlayerHud(Player player, PlayerRef playerRef) {
         if (!playersWithHud.contains(playerRef)) return;
         playersWithHud.remove(playerRef);
@@ -66,7 +73,7 @@ public class HudManager extends TickingSystem<EntityStore> {
             multiHudClass.getMethod("setCustomHud", Player.class, PlayerRef.class, String.class, CustomUIHud.class)
                     .invoke(multiHudInstance, player, playerRef, "TpsHud", new NoneHud(playerRef));
         } catch (ClassNotFoundException e) {
-            player.getHudManager().setCustomHud(playerRef, new NoneHud(playerRef));
+           player.getHudManager().setCustomHud(playerRef, new NoneHud(playerRef));
         } catch (Exception e) {
             logger.severe("Error removing player HUD: " + e.getMessage());
             return;
