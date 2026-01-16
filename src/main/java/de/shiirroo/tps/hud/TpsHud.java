@@ -32,7 +32,6 @@ public class TpsHud extends CustomUIHud {
 
     @Override
     public void update(boolean clear, @NotNull UICommandBuilder commandBuilder) {
-        log.info("Updating Hud");
         Ref<EntityStore> ref = getPlayerRef().getReference();
         if (ref != null){
             Player player = ref.getStore().getComponent(ref, Player.getComponentType());
