@@ -54,7 +54,7 @@ tasks {
             "description" to project.description
         )
         inputs.properties(props)
-        
+
         filesMatching("manifest.json") {
             expand(props)
         }
