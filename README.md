@@ -9,6 +9,8 @@ This mod provides detailed **TPS (Ticks Per Second) monitoring** for each world 
 - Provides **average TPS** over the last **10 seconds, 1 minute, and 5 minutes**.  
 - If the server has not been running long enough, averages are calculated using the available runtime.  
 
+![TPS Monitor Screenshot](img/tps_screenshot.png)
+
 ## Usage
 
 Simply run the `/tps` command in the console or in-game.  
