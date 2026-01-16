@@ -19,8 +19,14 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("org.jetbrains:annotations:24.1.0")
 
+    compileOnly("org.projectlombok:lombok:1.18.42")
+    annotationProcessor("org.projectlombok:lombok:1.18.42")
+
+
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testCompileOnly("org.projectlombok:lombok:1.18.42")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.42")
 }
 
 artifacts {
