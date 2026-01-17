@@ -6,6 +6,7 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.commands.world.perf.WorldPerfCommand;
 
 import java.awt.*;
+import java.util.logging.Logger;
 
 public class TpsHelper {
 
@@ -13,6 +14,7 @@ public class TpsHelper {
     //Utility Messages
     public final static Message spacer = Message.raw(" | ");
     public final static Message newLine = Message.raw("\n");
+    private static final Logger logger = Logger.getLogger("TpsHelper");
 
     public static Message getAvgMessage(MetricsTime metricsTime, World world, double maxMSPT) {
         return Message.raw("         Ø " + metricsTime.getDisplay() + " => ")

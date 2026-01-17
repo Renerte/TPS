@@ -1,16 +1,12 @@
 package de.shiirroo.tps.cmd;
 
-import com.hypixel.hytale.metrics.metric.HistoricMetric;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
 import com.hypixel.hytale.server.core.universe.Universe;
-import com.hypixel.hytale.server.core.universe.world.World;
-import com.hypixel.hytale.server.core.universe.world.commands.world.perf.WorldPerfCommand;
 import de.shiirroo.tps.MetricsTime;
 import de.shiirroo.tps.Tps;
 import de.shiirroo.tps.TpsHelper;
-import de.shiirroo.tps.hud.HudManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -19,7 +15,8 @@ public class TpsCommand extends CommandBase {
 
     public TpsCommand() {
         super("tps", "Shows the TPS of all worlds.", false);
-        addSubCommand(new TpsShow(Tps.getInstance().getHudManager()));
+        requirePermission("tps.command.tps");
+        addSubCommand(new TpsShow(Tps.getInstance().getTpsManager()));
     }
 
     @Override

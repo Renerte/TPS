@@ -19,7 +19,6 @@ import java.util.logging.Logger;
 
 public class TpsHud extends CustomUIHud {
 
-    private static final Logger log = Logger.getLogger("TpsHud");
 
     public TpsHud(PlayerRef playerRef) {
         super(playerRef);
@@ -36,12 +35,12 @@ public class TpsHud extends CustomUIHud {
         if (ref != null){
             Player player = ref.getStore().getComponent(ref, Player.getComponentType());
             if (player == null) {
-                log.warning("Player not found");
+                Tps.getInstance().getLog().warning("Player not found");
                 return;
             }
             World world = player.getWorld();
             if (world == null) {
-                log.warning("World not found for player: " + getPlayerRef().getUsername());
+                Tps.getInstance().getLog().warning("World not found for player: " + getPlayerRef().getUsername());
                 return;
             }
             double liveTps = TpsHelper.getLiveTPS(world);
@@ -56,7 +55,7 @@ public class TpsHud extends CustomUIHud {
             commandBuilder.set("#MyLabel.TextSpans", Message.raw("").insert(hud));
 
         } else {
-            log.warning("EntityStore reference not found for player: " + getPlayerRef().getUsername());
+            Tps.getInstance().getLog().warning("EntityStore reference not found for player: " + getPlayerRef().getUsername());
         }
         super.update(clear, commandBuilder);
     }

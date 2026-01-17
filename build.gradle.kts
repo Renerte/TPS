@@ -37,7 +37,7 @@ artifacts {
 
 
 runHytale {
-    jarUrl = "file:///W:/Coding/Hytale/Server/2026.01.13-dcad8778f/Server/HytaleServer.jar"
+    jarUrl = "file:///C:/Users/Patrick/AppData/Roaming/Hytale/install/release/package/game/latest/Server/HytaleServer.jar"
 }
 
 tasks {

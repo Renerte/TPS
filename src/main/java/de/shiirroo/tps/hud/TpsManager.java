@@ -8,17 +8,14 @@ import com.hypixel.hytale.server.core.entity.entities.player.hud.CustomUIHud;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import lombok.Getter;
-import lombok.Setter;
+import de.shiirroo.tps.Tps;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.concurrent.ScheduledFuture;
-import java.util.logging.Logger;
 
-public class HudManager extends TickingSystem<EntityStore> {
+public class TpsManager extends TickingSystem<EntityStore> {
 
-    private final Logger logger = Logger.getLogger("HudManager");
+
     private final List<PlayerRef> playersWithHud = new ArrayList<>();
     private static final long ONE_SECOND_NANOS = 1_000_000_000L;
     private long lastUpdate = 0;
@@ -42,15 +39,8 @@ public class HudManager extends TickingSystem<EntityStore> {
 
     public void setupPlayer(Player player, PlayerRef playerRef) {
         if (playersWithHud.contains(playerRef)) return;
-        try {
-            Class<?> multiHudClass = Class.forName("com.buuz135.mhud.MultipleHUD");
-            Object multiHudInstance = multiHudClass.getMethod("getInstance").invoke(null);
-            multiHudClass.getMethod("setCustomHud", Player.class, PlayerRef.class, String.class, CustomUIHud.class)
-                    .invoke(multiHudInstance, player, playerRef, "TpsHud", new TpsHud(playerRef));
-        } catch (ClassNotFoundException e) {
-            player.getHudManager().setCustomHud(playerRef, new TpsHud(playerRef));
-        } catch (Exception e) {
-            logger.severe("Error setting up player HUD: " + e.getMessage());
+        if (!setHud(player, playerRef, "TpsHud", new TpsHud(playerRef))) {
+            Tps.getInstance().getLog().severe("Failed to set up HUD for player: " + playerRef.getUsername());
             return;
         }
         playersWithHud.add(playerRef);
@@ -63,20 +53,29 @@ public class HudManager extends TickingSystem<EntityStore> {
 
 
 
-    public void removePlayerHud(Player player, PlayerRef playerRef) {
-        if (!playersWithHud.contains(playerRef)) return;
+    public boolean removePlayerHud(Player player, PlayerRef playerRef) {
+        if (!playersWithHud.contains(playerRef)) return false;
+        if (!setHud(player, playerRef, "TpsHud", new NoneHud(playerRef))) {
+            Tps.getInstance().getLog().severe("Failed to remove HUD for player: " + playerRef.getUsername());
+            return false;
+        }
+        playersWithHud.remove(playerRef);
+        return true;
+    }
+
+    public boolean setHud(Player player, PlayerRef playerRef, String hud_id, CustomUIHud hud) {
         try {
             Class<?> multiHudClass = Class.forName("com.buuz135.mhud.MultipleHUD");
             Object multiHudInstance = multiHudClass.getMethod("getInstance").invoke(null);;
             multiHudClass.getMethod("setCustomHud", Player.class, PlayerRef.class, String.class, CustomUIHud.class)
-                    .invoke(multiHudInstance, player, playerRef, "TpsHud", new NoneHud(playerRef));
+                    .invoke(multiHudInstance, player, playerRef, hud_id, hud);
         } catch (ClassNotFoundException e) {
-           player.getHudManager().setCustomHud(playerRef, new NoneHud(playerRef));
+            player.getHudManager().setCustomHud(playerRef, hud);
         } catch (Exception e) {
-            logger.severe("Error removing player HUD: " + e.getMessage());
-            return;
+            Tps.getInstance().getLog().severe("Error removing player HUD: " + e.getMessage());
+            return false;
         }
-        playersWithHud.remove(playerRef);
+        return true;
     }
 
 

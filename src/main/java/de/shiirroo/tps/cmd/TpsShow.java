@@ -5,30 +5,26 @@ import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
-import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
-import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import de.shiirroo.tps.MetricsTime;
-import de.shiirroo.tps.TpsHelper;
-import de.shiirroo.tps.hud.HudManager;
+import de.shiirroo.tps.Tps;
+import de.shiirroo.tps.hud.TpsManager;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.util.logging.Logger;
 
 public class TpsShow  extends AbstractPlayerCommand {
 
     @Getter
-    private final HudManager hudManager;
-    private final Logger log = Logger.getLogger("TpsShow");
+    private final TpsManager tpsManager;
 
-    public TpsShow(HudManager hudManager) {
+    public TpsShow(TpsManager tpsManager) {
         super("show", "Display TPS on HUD.", false);
-        this.hudManager = hudManager;
+        requirePermission("tps.command.tps.show");
+        this.tpsManager = tpsManager;
     }
 
     @Override
@@ -37,14 +33,14 @@ public class TpsShow  extends AbstractPlayerCommand {
         if (ref != null) {
             Player player = ref.getStore().getComponent(ref, Player.getComponentType());
             if (player == null) {
-                log.warning("Player not found");
+                Tps.getInstance().getLog().warning("Player not found");
                 return;
             }
-            boolean toggleTo = hudManager.toggleHud(player, playerRef);
+            boolean toggleTo = tpsManager.toggleHud(player, playerRef);
             if (toggleTo) {
-                context.sendMessage(Message.raw("TPS HUD enabled").color(Color.GREEN));
+                player.sendMessage(Message.raw("TPS HUD enabled").color(Color.GREEN));
             } else {
-                context.sendMessage(Message.raw("TPS HUD disabled").color(Color.RED));
+                player.sendMessage(Message.raw("TPS HUD disabled").color(Color.RED));
             }
 
         }
