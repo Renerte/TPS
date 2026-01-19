@@ -1,0 +1,131 @@
+$C = "../Common.ui";
+
+
+@CloseButtonStyle = TextButtonStyle(
+    Default: (Background: #2b3542, LabelStyle: (FontSize: 13, TextColor: #96a9be, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+    Hovered: (Background: #3b4552, LabelStyle: (FontSize: 13, TextColor: #b6c9de, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+    Pressed: (Background: #1b2532, LabelStyle: (FontSize: 13, TextColor: #96a9be, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+@CloseButtonStyle2 = TextButtonStyle(
+    Default: (Background: #0a1119(0), LabelStyle: (FontSize: 13, TextColor: #96a9be, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+    Hovered: (Background: #3b4552, LabelStyle: (FontSize: 13, TextColor: #b6c9de, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
+    Pressed: (Background: #0a1119(0), LabelStyle: (FontSize: 13, TextColor: #96a9be, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+);
+
+
+Group {
+    Anchor: (Width: 500, Height: 320);
+    LayoutMode: Left;
+
+    Group #LeftPanel {
+        Anchor: (Width: 150);
+        Background: #0a1119(0.95);
+        LayoutMode: Top;
+        Padding: (Full: 16);
+
+        Label {
+            Text: "TPS MENU";
+            Anchor: (Height: 25);
+            Style: (FontSize: 11, TextColor: #4a5568, RenderUppercase: true, LetterSpacing: 2);
+        }
+
+        Group { Anchor: (Height: 8); }
+
+        TextButton #CloseButton {
+            Text: "> Dashboard";
+            Anchor: (Width: 100, Height: 36);
+            Style: @CloseButtonStyle2;
+        }
+
+        TextButton #CloseButton {
+            Text: "  Settings";
+            Anchor: (Width: 100, Height: 36);
+            Style: @CloseButtonStyle2;
+        }
+
+        TextButton #CloseButton {
+            Text: "  About";
+            Anchor: (Width: 100, Height: 36);
+            Style: @CloseButtonStyle2;
+        }
+    }
+
+    Group #RightPanel {
+        FlexWeight: 1;
+        Background: #141c26(0.98);
+        LayoutMode: Top;
+        Padding: (Full: 20);
+
+        Label {
+            Text: "TPS Dashboard";
+            Anchor: (Height: 40);
+            Style: (FontSize: 22, TextColor: #ffffff, RenderBold: true, Alignment: Center);
+        }
+
+        Group {
+            Anchor: (Height: 1);
+            Background: #2b3542;
+        }
+
+        Group { Anchor: (Height: 16); }
+
+        Label {
+            Text: "Live TPS";
+            Anchor: (Height: 25);
+            Style: (FontSize: 13, TextColor: #6e7da1, Alignment: Center);
+        }
+
+        Group { Anchor: (Height: 8); }
+
+        Group #StatsGrid {
+            LayoutMode: Left;
+            Anchor: (Height: 70);
+
+            Group {
+                FlexWeight: 1;
+                LayoutMode: Top;
+
+                Label #TpsValue {
+                    Text: "0";
+                    Anchor: (Height: 32);
+                    Style: (FontSize: 26, TextColor: #4aff7f, RenderBold: true);
+                }
+                Label {
+                    Text: "TPS";
+                    Anchor: (Height: 18);
+                    Style: (FontSize: 11, TextColor: #6e7da1);
+                }
+            }
+
+            Group {
+                FlexWeight: 1;
+                LayoutMode: Top;
+
+                Label #MsptValue {
+                    Text: "0";
+                    Anchor: (Height: 32);
+                    Style: (FontSize: 26, TextColor: #ffaa4a, RenderBold: true);
+                }
+                Label {
+                    Text: "MSPT";
+                    Anchor: (Height: 18);
+                    Style: (FontSize: 11, TextColor: #6e7da1);
+                }
+            }
+        }
+
+        Group { FlexWeight: 1; }
+
+        Group {
+            LayoutMode: Right;
+            Anchor: (Height: 40);
+
+            TextButton #CloseButton {
+                Text: "CLOSE";
+                Anchor: (Width: 100, Height: 36);
+                Style: @CloseButtonStyle;
+            }
+        }
+    }
+}

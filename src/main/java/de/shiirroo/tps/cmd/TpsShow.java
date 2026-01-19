@@ -33,7 +33,7 @@ public class TpsShow  extends AbstractPlayerCommand {
         if (ref != null) {
             Player player = ref.getStore().getComponent(ref, Player.getComponentType());
             if (player == null) {
-                Tps.getInstance().getLog().warning("Player not found");
+                Tps.getLog().warning("Player not found");
                 return;
             }
             boolean toggleTo = tpsManager.toggleHud(player, playerRef);

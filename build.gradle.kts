@@ -1,3 +1,6 @@
+
+import kotlin.repeat
+
 plugins {
     id("java-library")
     id("com.gradleup.shadow") version "9.3.1"
@@ -14,7 +17,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly(files("libs/HytaleServer.jar"))
+    compileOnly(files("C:/Users/Patrick/AppData/Roaming/Hytale/install/release/package/game/latest/Server/HytaleServer.jar"))
 
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("org.jetbrains:annotations:24.1.0")
@@ -30,14 +33,14 @@ dependencies {
 }
 
 artifacts {
-    archives(file("W:/Coding/Hytale/Server/2026.01.13-dcad8778f/Server/HytaleServer-sources.jar")) {
+    archives(file("C:/Users/Patrick/AppData/Roaming/Hytale/install/release/package/game/latest/Server/HytaleServer-sources.jar")) {
         classifier = "sources"
     }
 }
 
 
 runHytale {
-    jarUrl = "file:///C:/Users/Patrick/AppData/Roaming/Hytale/install/release/package/game/latest/Server/HytaleServer.jar"
+    serverFolder = "file:///C:/Users/Patrick/AppData/Roaming/Hytale/install/release/package/game/latest/Server/"
 }
 
 tasks {

@@ -6,16 +6,10 @@ import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.hud.CustomUIHud;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
-import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import de.shiirroo.tps.Tps;
 import de.shiirroo.tps.TpsHelper;
-import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
-import org.jline.utils.Log;
-
-import java.util.logging.Logger;
 
 public class TpsHud extends CustomUIHud {
 
@@ -27,36 +21,44 @@ public class TpsHud extends CustomUIHud {
     @Override
     protected void build(UICommandBuilder builder) {
         builder.append("Hud/TPS.ui");
-    }
-
-    @Override
-    public void update(boolean clear, @NotNull UICommandBuilder commandBuilder) {
         Ref<EntityStore> ref = getPlayerRef().getReference();
-        if (ref != null){
+        if (ref != null) {
             Player player = ref.getStore().getComponent(ref, Player.getComponentType());
-            if (player == null) {
-                Tps.getInstance().getLog().warning("Player not found");
-                return;
-            }
-            World world = player.getWorld();
-            if (world == null) {
-                Tps.getInstance().getLog().warning("World not found for player: " + getPlayerRef().getUsername());
-                return;
-            }
-            double liveTps = TpsHelper.getLiveTPS(world);
-            double maxMSPT = TpsHelper.getMaxMSPT(world);
-            Message live  = Message.raw("TPS: ");
-            Message liveTpsMessage = TpsHelper.colorizeTps(liveTps, world.getTps());
-            Message liveMsptMessage = TpsHelper.colorizeMspt(TpsHelper.getLiveMspt(world), maxMSPT);
-            Message msptlabel = Message.raw("MSPT: ");
-
-
-            Message hud = live.insert(liveTpsMessage).insert(TpsHelper.spacer).insert(msptlabel).insert(liveMsptMessage);
-            commandBuilder.set("#MyLabel.TextSpans", Message.raw("").insert(hud));
+            setHud(player, builder);
 
         } else {
-            Tps.getInstance().getLog().warning("EntityStore reference not found for player: " + getPlayerRef().getUsername());
+            Tps.getLog().warning("EntityStore reference not found for player: " + getPlayerRef().getUsername());
         }
-        super.update(clear, commandBuilder);
     }
+
+    public void updatePlayerHud(Player player) {
+        var builder = new UICommandBuilder();
+        setHud(player, builder);
+        this.update(false, builder);
+    }
+
+    private void setHud(Player player, UICommandBuilder commandBuilder) {
+        if (player == null) {
+            Tps.getLog().warning("Player not found");
+            return;
+        }
+        World world = player.getWorld();
+        if (world == null) {
+            Tps.getLog().warning("World not found for player: " + getPlayerRef().getUsername());
+            return;
+        }
+        double liveTps = TpsHelper.getLiveTPS(world);
+        double maxMSPT = TpsHelper.getMaxMSPT(world);
+        Message live  = Message.raw("TPS: ");
+        Message liveTpsMessage = TpsHelper.colorizeTps(liveTps, world.getTps());
+        Message liveMsptMessage = TpsHelper.colorizeMspt(TpsHelper.getLiveMspt(world), maxMSPT);
+        Message msptlabel = Message.raw("MSPT: ");
+
+        Message hud = live.insert(liveTpsMessage).insert(TpsHelper.spacer).insert(msptlabel).insert(liveMsptMessage);
+        commandBuilder.set("#TPSLabel.TextSpans", Message.raw("").insert(hud));
+    }
+
+
+
+
 }

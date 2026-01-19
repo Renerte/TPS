@@ -8,7 +8,7 @@ Group {
     Padding: (Horizontal: 3, Vertical: 3);
     LayoutMode: Center;
 
-    Label #MyLabel {
+    Label #TPSLabel {
       Style: (FontSize: 12, Alignment: Center);
       Text: "MyText";
     }
