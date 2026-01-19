@@ -19,6 +19,8 @@ repositories {
 dependencies {
     compileOnly(files("C:/Users/Patrick/AppData/Roaming/Hytale/install/release/package/game/latest/Server/HytaleServer.jar"))
 
+    compileOnly(fileTree("libs") { include("*.jar") })
+
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("org.jetbrains:annotations:24.1.0")
 

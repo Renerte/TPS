@@ -2,30 +2,24 @@ package de.shiirroo.tps.hud;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.server.core.entity.entities.Player;
-import com.hypixel.hytale.server.core.entity.entities.player.hud.CustomUIHud;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import de.shiirroo.tps.Tps;
+import de.shiirroo.tps.hud.adapter.HudAdapterSelector;
 import de.shiirroo.tps.page.TpsGuiPage;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class TpsManager implements Runnable {
 
-
     private final List<UUID> playersWithHud = new ArrayList<>();
     private final ConcurrentHashMap<UUID, TpsGuiPage> playersWithGui = new ConcurrentHashMap<>();
     private final static String HUD_ID = "TpsHud";
-
-
 
     public void update() {
         updateGuiHud();
@@ -45,15 +39,7 @@ public class TpsManager implements Runnable {
                 if (ref != null) {
                     Player player = ref.getStore().getComponent(ref, Player.getComponentType());
                     if (player != null) {
-                        if (player.getHudManager().getCustomHud() == null) {
-                            return;
-                        }
-                        CustomUIHud hud = getHud(player, HUD_ID);
-                        if (hud != null) {
-                            if (hud instanceof TpsHud tpsHud) {
-                                    tpsHud.updatePlayerHud(player);
-                                }
-                            }
+                        HudAdapterSelector.get().updatePlayerHud(player, HUD_ID);
                     }
                 }
             });
@@ -97,14 +83,9 @@ public class TpsManager implements Runnable {
         Tps.getLog().info("Player " + playerRef.getUuid() + " removed from history");
     }
 
-
-
     public void setupPlayer(Player player, PlayerRef playerRef) {
         if (playersWithHud.contains(playerRef.getUuid())) return;
-        if (!setHud(player, playerRef, HUD_ID, new TpsHud(playerRef))) {
-            Tps.getLog().severe("Failed to set up HUD for player: " + playerRef.getUsername());
-            return;
-        }
+        HudAdapterSelector.get().setCustomHud(player, playerRef, HUD_ID, new TpsHud(playerRef));
         playersWithHud.add(playerRef.getUuid());
     }
 
@@ -113,74 +94,12 @@ public class TpsManager implements Runnable {
         playersWithHud.remove(playerRef.getUuid());
     }
 
-
-
     public boolean removePlayerHud(Player player, PlayerRef playerRef) {
         if (!playersWithHud.contains(playerRef.getUuid())) return false;
-        if (!setHud(player, playerRef, HUD_ID, new NoneHud(playerRef))) {
-            Tps.getLog().severe("Failed to remove HUD for player: " + playerRef.getUsername());
-            return false;
-        }
+        HudAdapterSelector.get().setCustomHud(player, playerRef, HUD_ID, new NoneHud(playerRef));
         playersWithHud.remove(playerRef.getUuid());
         return true;
     }
-
-    public boolean setHud(Player player, PlayerRef playerRef, String hud_id, CustomUIHud hud) {
-        try {
-            getMultiHudClass().getMethod("setCustomHud", Player.class, PlayerRef.class, String.class, CustomUIHud.class)
-                    .invoke(getMultiHudInstance(), player, playerRef, hud_id, hud);
-        } catch (ClassNotFoundException e) {
-            player.getHudManager().setCustomHud(playerRef, hud);
-        } catch (Exception e) {
-            Tps.getLog().severe("Error removing player HUD: " + e.getMessage());
-            return false;
-        }
-        return true;
-    }
-
-    public Class<?> getMultiHudClass() throws ClassNotFoundException {
-        return Class.forName("com.buuz135.mhud.MultipleHUD");
-    }
-
-    public Class<?> getMultipleCustomUIHudClass() throws ClassNotFoundException {
-        return Class.forName("com.buuz135.mhud.MultipleCustomUIHud");
-    }
-
-
-    public CustomUIHud getHud(Player player, String hud_id) {
-        var currentCustomHud = player.getHudManager().getCustomHud();
-        if (currentCustomHud == null) return null;
-        if (currentCustomHud instanceof TpsHud) return currentCustomHud;
-        try {
-            if (getMultipleCustomUIHudClass().isAssignableFrom(currentCustomHud.getClass())){
-                HashMap<String, CustomUIHud> customHuds = getCustomHuds(currentCustomHud);
-                return customHuds.get(hud_id);
-            } else {
-                return currentCustomHud;
-            }
-        } catch (ClassNotFoundException e) {
-            return null;
-        }
-    }
-
-
-    public Object getMultiHudInstance() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        Class<?> multiHudClass = Class.forName("com.buuz135.mhud.MultipleHUD");
-        return multiHudClass.getMethod("getInstance").invoke(null);
-    }
-
-    public HashMap<String, CustomUIHud> getCustomHuds(CustomUIHud customUIHud) {
-        try {
-            Class<?> multipleCustomUIHudClass = getMultipleCustomUIHudClass();
-            Method method = multipleCustomUIHudClass.getMethod("getCustomHuds");
-            method.setAccessible(true);
-            return (HashMap<String, CustomUIHud>) method.invoke(customUIHud);
-        } catch (Exception e) {
-            Tps.getLog().severe("Error getting custom HUDs: " + e.getMessage());
-            return new HashMap<>();
-        }
-    }
-
 
     public boolean toggleHud(Player player, PlayerRef playerRef) {
         if (playersWithHud.contains(playerRef.getUuid())) {
@@ -191,7 +110,6 @@ public class TpsManager implements Runnable {
             return true;
         }
     }
-
 
     @Override
     public void run() {
