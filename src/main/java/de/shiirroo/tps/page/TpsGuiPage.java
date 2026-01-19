@@ -66,7 +66,7 @@ public class TpsGuiPage extends InteractiveCustomUIPage<TpsGuiPage.CloseEventDat
         evt.addEventBinding(CustomUIEventBindingType.Activating, "#CloseButton");
     }
 
-    public void test(World world) {
+    public void updatePlayerHud(World world) {
         this.live_tps = TpsHelper.getLiveTPS(world);
         this.live_mspt = TpsHelper.getLiveMspt(world);
         UICommandBuilder cmd = new UICommandBuilder();

@@ -73,7 +73,7 @@ public class TpsManager implements Runnable {
                     Player player = ref.getStore().getComponent(ref, Player.getComponentType());
                     if (player != null) {
                         TpsGuiPage currentPage = playersWithGui.get(uuid);
-                        currentPage.test(world);
+                        currentPage.updatePlayerHud(world);
                     }
                 }
             });
