@@ -55,7 +55,7 @@ public class TpsGuiPage extends InteractiveCustomUIPage<TpsGuiPage.CloseEventDat
         Player player = store.getComponent(ref, Player.getComponentType());
         if (player == null) return;
         
-        Tps.getInstance().getTpsManager().removeGui(player, this.playerRef);
+        Tps.getInstance().getTpsManager().removeGui(this.playerRef);
         player.getPageManager().setPage(ref, store, Page.None);
     }
 

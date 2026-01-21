@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
-public class TpsShow  extends AbstractPlayerCommand {
+public class TpsShow extends AbstractPlayerCommand {
 
     @Getter
     private final TpsManager tpsManager;

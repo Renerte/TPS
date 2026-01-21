@@ -3,43 +3,46 @@ package de.shiirroo.tps.history;
 import de.shiirroo.tps.MetricsTime;
 import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class TpsWorldHistory {
 
     @Getter
-    private final List<TpsData> tpsData = new ArrayList<>();
+    private final ConcurrentHashMap<MetricsTime, List<TpsData>> tpsData = new ConcurrentHashMap<>();
 
     @Getter
     private final String worldName;
 
-    @Getter
-    private final MetricsTime metricsTime;
-    public TpsWorldHistory(String worldName, MetricsTime metricsTime) {
+    public TpsWorldHistory(String worldName) {
         this.worldName = worldName;
-        this.metricsTime = metricsTime;
     }
 
-    public void addTpsRecord(TpsTimeRange range, double tps) {
-        for(TpsData data : tpsData) {
-            if(data.range().compareTo(range) == 0) {
-                return;
-            }
+    public void addTpsRecord(MetricsTime metricsTime, TpsTimeRange range, double tps, double mspt) {
+        if (!tpsData.containsKey(metricsTime)) {
+            tpsData.put(metricsTime, new java.util.ArrayList<>());
         }
-        tpsData.add(new TpsData(range, tps));
-    }
-
-    public Optional<TpsData> getTpsRecord(long timestamp) {
-        for(TpsData data : tpsData) {
-            if(data.range().isWithinRange(timestamp)) {
-                return Optional.of(data);
-            }
+        if (tpsData.get(metricsTime).size() >= metricsTime.getMaxRecords()) {
+            tpsData.get(metricsTime).removeFirst();
         }
-        return Optional.empty();
+        tpsData.get(metricsTime).add(new TpsData(range, tps, mspt));
     }
 
+    public List<TpsData> getTpsData(MetricsTime metricsTime) {
+        return tpsData.getOrDefault(metricsTime, java.util.Collections.emptyList());
+    }
+
+    public double getAverageTps(MetricsTime metricsTime) {
+        List<TpsData> dataList = tpsData.get(metricsTime);
+        if (dataList == null || dataList.isEmpty()) return 0.0;
+        return dataList.stream().mapToDouble(TpsData::tps).average().orElse(0.0);
+    }
+
+    public double getAverageMspt(MetricsTime metricsTime) {
+        List<TpsData> dataList = tpsData.get(metricsTime);
+        if (dataList == null || dataList.isEmpty()) return 0.0;
+        return dataList.stream().mapToDouble(TpsData::mspt).average().orElse(0.0);
+    }
 
 
 

@@ -8,6 +8,7 @@ import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import de.shiirroo.tps.cmd.TpsCommand;
 import de.shiirroo.tps.hud.TpsManager;
 import lombok.Getter;
+import com.hypixel.hytale.server.core.util.Config;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.TimeUnit;
@@ -24,16 +25,19 @@ public class Tps extends JavaPlugin {
     private final TpsManager tpsManager;
     @Getter
     private static final Logger log = Logger.getLogger(Tps.class.getName());
-
+    @Getter
+    private final Config<TPSConfig> config;
 
     public Tps(@NotNull JavaPluginInit init) {
         super(init);
         instance = this;
-        this.tpsManager = new TpsManager();
+        this.config = this.withConfig(getIdentifier().getName(), TPSConfig.CODEC);
+        this.tpsManager = new TpsManager(config);
     }
 
 
     protected void setup() {
+        this.config.save();
         handlePlayerLeave();
         getCommandRegistry().registerCommand(new TpsCommand());
         Logger.getLogger(Tps.class.getName()).log(Level.INFO, PREFIX + "Plugin enabled!!");

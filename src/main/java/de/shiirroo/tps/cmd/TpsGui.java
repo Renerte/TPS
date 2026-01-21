@@ -18,7 +18,7 @@ public class TpsGui extends AbstractPlayerCommand {
 
     public TpsGui() {
         super("gui", "Opens the TPS GUI page", false);
-        requirePermission("tps.command.gui");
+        requirePermission("tps.command.tps.gui");
     }
 
     @Override
@@ -40,6 +40,6 @@ public class TpsGui extends AbstractPlayerCommand {
         TpsGuiPage page = new TpsGuiPage(playerRef, liveTps, liveMspt);
 
         player.getPageManager().openCustomPage(ref, store, page);
-        Tps.getInstance().getTpsManager().addGui(player, playerRef, page);
+        Tps.getInstance().getTpsManager().addGui(playerRef);
     }
 }

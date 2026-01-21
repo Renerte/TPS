@@ -1,7 +1,7 @@
 {
   "Group": "Shiirroo",
   "Name": "TPS",
-  "Version": "1.0.5",
+  "Version": "1.0.9",
   "Description": "Displays real-time and averaged TPS/MSPT per world.",
   "Authors": [
     {

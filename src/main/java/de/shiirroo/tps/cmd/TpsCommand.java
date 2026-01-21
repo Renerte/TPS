@@ -18,6 +18,10 @@ public class TpsCommand extends CommandBase {
         requirePermission("tps.command.tps");
         addSubCommand(new TpsShow(Tps.getInstance().getTpsManager()));
         addSubCommand(new TpsGui());
+        addSubCommand(new TpsGuiMetrics(Tps.getInstance().getTpsManager()));
+        addSubCommand(new TpsReload(Tps.getInstance().getTpsManager()));
+        addSubCommand(new TpsMetrics(Tps.getInstance().getTpsManager()));
+        addSubCommand(new TpsWarning(Tps.getInstance().getTpsManager()));
     }
 
     @Override
@@ -27,12 +31,8 @@ public class TpsCommand extends CommandBase {
             context.sendMessage(Message.raw("No worlds found.").color(Color.RED));
             return;
         }
-        context.sendMessage(Message.raw("Test"));
-
         Message label = Message.raw("========== Worlds – TPS / MSPT ==========").color(Color.orange);
         context.sendMessage(label);
-
-
 
         universe.getWorlds().forEach((worldName, world) -> {
             double liveTps = TpsHelper.getLiveTPS(world);

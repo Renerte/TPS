@@ -21,6 +21,7 @@ public class HudAdapterSelector implements HudAdapter {
             hudAdapter = new DefaultHudAdapter();
             Tps.getLog().severe("MultipleHUD plugin not found. Mod won't be compatible with other HUD mods.");
         } else {
+            Tps.getLog().info("MultipleHUD plugin is compatible with other HUD mods.");
             hudAdapter = new MultipleHudAdapter();
         }
     }

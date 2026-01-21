@@ -14,8 +14,18 @@ $C = "../Common.ui";
 );
 
 
+@TpsButtonStyle = TextButtonStyle(
+    Default: (Background: (TexturePath: "../Common/TPSGreen.png", Border: 0)),
+    Hovered: (Background: (TexturePath: "../Common/TPSOrange.png", Border: 0)),
+    Pressed: (Background: (TexturePath: "../Common/TPSRed.png", Border: 0))
+);
+
+
+@Spacer = 5;
+
+
 Group {
-    Anchor: (Width: 500, Height: 320);
+    Anchor: (Width: 520, Height: 402);
     LayoutMode: Left;
 
     Group #LeftPanel {
@@ -79,7 +89,7 @@ Group {
         Group { Anchor: (Height: 8); }
 
         Group #StatsGrid {
-            LayoutMode: Left;
+            LayoutMode: Center;
             Anchor: (Height: 70);
 
             Group {
@@ -89,14 +99,15 @@ Group {
                 Label #TpsValue {
                     Text: "0";
                     Anchor: (Height: 32);
-                    Style: (FontSize: 26, TextColor: #4aff7f, RenderBold: true);
+                    Style: (FontSize: 26, TextColor: #4aff7f, RenderBold: true, Alignment: Center);
                 }
                 Label {
                     Text: "TPS";
                     Anchor: (Height: 18);
-                    Style: (FontSize: 11, TextColor: #6e7da1);
+                    Style: (FontSize: 11, TextColor: #6e7da1, Alignment: Center);
                 }
             }
+
 
             Group {
                 FlexWeight: 1;
@@ -105,27 +116,166 @@ Group {
                 Label #MsptValue {
                     Text: "0";
                     Anchor: (Height: 32);
-                    Style: (FontSize: 26, TextColor: #ffaa4a, RenderBold: true);
+                    Style: (FontSize: 26, TextColor: #ffaa4a, RenderBold: true, Alignment: Center);
                 }
                 Label {
                     Text: "MSPT";
                     Anchor: (Height: 18);
-                    Style: (FontSize: 11, TextColor: #6e7da1);
+                    Style: (FontSize: 11, TextColor: #6e7da1, Alignment: Center);
                 }
             }
         }
 
         Group { FlexWeight: 1; }
 
-        Group {
-            LayoutMode: Right;
-            Anchor: (Height: 40);
 
-            TextButton #CloseButton {
-                Text: "CLOSE";
-                Anchor: (Width: 100, Height: 36);
-                Style: @CloseButtonStyle;
+        Group #Barrid {
+            LayoutMode: Left;
+            Anchor: (Height: 70);
+
+            Group {
+                FlexWeight: 1;
+                LayoutMode: Center;
+
+                TextButton {
+                    Text: "";
+                    Anchor: (Width: 10, Height: 40);
+                    Style: @TpsButtonStyle;
+                }
+                Group { Anchor: (Width: @Spacer); }
+
+                TextButton  {
+                    Text: "";
+                    Anchor: (Width: 10, Height: 40);
+                    Style: @TpsButtonStyle;
+                }
+                Group { Anchor: (Width: @Spacer); }
+                TextButton {
+                    Text: "";
+                    Anchor: (Width: 10, Height: 40);
+                    Style: @TpsButtonStyle;
+                }
+                Group { Anchor: (Width: @Spacer); }
+                TextButton {
+                    Text: "";
+                    Anchor: (Width: 10, Height: 40);
+                    Style: @TpsButtonStyle;
+                }
+                Group { Anchor: (Width: @Spacer); }
+                TextButton  {
+                    Text: "";
+                    Anchor: (Width: 10, Height: 40);
+                    Style: @TpsButtonStyle;
+                }
+                Group { Anchor: (Width: @Spacer); }
+                TextButton  {
+                    Text: "";
+                    Anchor: (Width: 10, Height: 40);
+                    Style: @TpsButtonStyle;
+                }
+                Group { Anchor: (Width: @Spacer); }
+                TextButton{
+                    Text: "";
+                    Anchor: (Width: 10, Height: 40);
+                    Style: @TpsButtonStyle;
+                }
+                Group { Anchor: (Width: @Spacer); }
+                TextButton {
+                    Text: "";
+                    Anchor: (Width: 10, Height: 40);
+                    Style: @TpsButtonStyle;
+                }
+                Group { Anchor: (Width: @Spacer); }
+                TextButton  {
+                    Text: "";
+                    Anchor: (Width: 10, Height: 40);
+                    Style: @TpsButtonStyle;
+                }
+                Group { Anchor: (Width: @Spacer); }
+                TextButton {
+                    Text: "";
+                    Anchor: (Width: 10, Height: 40);
+                    Style: @TpsButtonStyle;
+                }
+                Group { Anchor: (Width: @Spacer); }
+                TextButton {
+                    Text: "";
+                    Anchor: (Width: 10, Height: 40);
+                    Style: @TpsButtonStyle;
+                }
+                Group { Anchor: (Width: @Spacer); }
+                TextButton {
+                    Text: "";
+                    Anchor: (Width: 10, Height: 40);
+                    Style: @TpsButtonStyle;
+                }
+                Group { Anchor: (Width: @Spacer); }
+
+                TextButton  {
+                    Text: "";
+                    Anchor: (Width: 10, Height: 40);
+                    Style: @TpsButtonStyle;
+                }
+                Group { Anchor: (Width: @Spacer); }
+                TextButton {
+                    Text: "";
+                    Anchor: (Width: 10, Height: 40);
+                    Style: @TpsButtonStyle;
+                }
+                Group { Anchor: (Width: @Spacer); }
+                TextButton {
+                    Text: "";
+                    Anchor: (Width: 10, Height: 40);
+                    Style: @TpsButtonStyle;
+                }
+                Group { Anchor: (Width: @Spacer); }
+                TextButton  {
+                    Text: "";
+                    Anchor: (Width: 10, Height: 40);
+                    Style: @TpsButtonStyle;
+                }
+                Group { Anchor: (Width: @Spacer); }
+                TextButton  {
+                    Text: "";
+                    Anchor: (Width: 10, Height: 40);
+                    Style: @TpsButtonStyle;
+                }
+                Group { Anchor: (Width: @Spacer); }
+                TextButton{
+                    Text: "";
+                    Anchor: (Width: 10, Height: 40);
+                    Style: @TpsButtonStyle;
+                }
+                Group { Anchor: (Width: @Spacer); }
+                TextButton {
+                    Text: "";
+                    Anchor: (Width: 10, Height: 40);
+                    Style: @TpsButtonStyle;
+                }
+                Group { Anchor: (Width: @Spacer); }
+                TextButton  {
+                    Text: "";
+                    Anchor: (Width: 10, Height: 40);
+                    Style: @TpsButtonStyle;
+                }
+                Group { Anchor: (Width: @Spacer); }
+                TextButton {
+                    Text: "";
+                    Anchor: (Width: 10, Height: 40);
+                    Style: @TpsButtonStyle;
+                }
+                Group { Anchor: (Width: @Spacer); }
+                TextButton {
+                    Text: "";
+                    Anchor: (Width: 10, Height: 40);
+                    Style: @TpsButtonStyle;
+                }
+
             }
+
         }
+
     }
 }
+
+$C.@BackButton {}

@@ -1,0 +1,18 @@
+Group {
+    LayoutMode: Right;
+    Anchor: (Top: 0, Height: 0);
+
+    Group #TPSBarGroup {
+        Background: #13ad19(0.3);
+        Anchor: (Top: 5, Right: 5, Width: 10, Height: 50);
+        Padding: (Horizontal: 3, Vertical: 3);
+        LayoutMode: Center;
+    }
+
+    Group #TPSBarGroup {
+        Background: #13ad19(0.3);
+        Anchor: (Top: 5, Right: 5, Width: 10, Height: 50);
+        Padding: (Horizontal: 3, Vertical: 3);
+        LayoutMode: Center;
+    }
+}
