@@ -36,6 +36,10 @@ public class TpsShow extends AbstractPlayerCommand {
                 Tps.getLog().warning("Player not found");
                 return;
             }
+            if (!player.hasPermission("tps.command.tps.show")) {
+                player.sendMessage(Message.raw("You don't have permission to use this command.").color(Color.RED));
+                return;
+            }
             boolean toggleTo = tpsManager.toggleHud(player, playerRef);
             if (toggleTo) {
                 player.sendMessage(Message.raw("TPS HUD enabled").color(Color.GREEN));

@@ -23,8 +23,14 @@ public class TpsMetrics extends AbstractAsyncCommand {
 
     @Override
     protected @NotNull CompletableFuture<Void> executeAsync(@NotNull CommandContext paramCommandContext) {
-        var bool =  tpsManager.getSettings().get().isEnableMetrics();
-        tpsManager.getSettings().get().setEnableMetrics(!bool);
+        if (!paramCommandContext.sender().hasPermission("tps.command.tps.metrics")) {
+            paramCommandContext.sender().sendMessage(Message.parse("You don't have permission to use this command."));
+            return CompletableFuture.completedFuture(null);
+        }
+
+
+        var bool =  tpsManager.getSettings().get().getMetricsConfig().isEnableMetrics();
+        tpsManager.getSettings().get().getMetricsConfig().setEnableMetrics(!bool);
         paramCommandContext.sendMessage(Message.raw("TPS metrics set to: " + !bool));
         return tpsManager.getSettings().save();
     }

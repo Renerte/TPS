@@ -8,4 +8,5 @@ import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 public interface HudAdapter {
     void setCustomHud (@NonNullDecl Player player, @NonNullDecl PlayerRef playerRef, @NonNullDecl String hudIdentifier, @NonNullDecl CustomUIHud hud);
     void updatePlayerHud(@NonNullDecl Player player,String hudIdentifier);
+
 }

@@ -16,51 +16,68 @@ $C = "../Common.ui";
 
 @TpsButtonStyle = TextButtonStyle(
     Default: (Background: (TexturePath: "../Common/TPSGreen.png", Border: 0)),
-    Hovered: (Background: (TexturePath: "../Common/TPSOrange.png", Border: 0)),
+    Hovered: (Background: (TexturePath: "../Common/TPSHover.png", Border: 0)),
     Pressed: (Background: (TexturePath: "../Common/TPSRed.png", Border: 0))
 );
 
+@CustomTextTooltipStyle = TextTooltipStyle(
+  Background: $C.@DefaultTextTooltipStyle.Background,
+  MaxWidth: 240,
+  LabelStyle: (Wrap: true, FontSize: 16,HorizontalAlignment: Center, VerticalAlignment: Center),
+  Padding: 12
+);
 
-@Spacer = 5;
+
+@Spacer =  (Width: 5);
+@StatusStyle =  (Width: 10, Height: 30);
 
 
 Group {
-    Anchor: (Width: 520, Height: 402);
+    Anchor: (Width: 540, Height: 420);
     LayoutMode: Left;
-
     Group #LeftPanel {
+        LayoutMode: Top;
         Anchor: (Width: 150);
         Background: #0a1119(0.95);
-        LayoutMode: Top;
         Padding: (Full: 16);
-
-        Label {
-            Text: "TPS MENU";
-            Anchor: (Height: 25);
-            Style: (FontSize: 11, TextColor: #4a5568, RenderUppercase: true, LetterSpacing: 2);
+        Group {
+           FlexWeight: 1;
+           LayoutMode: Top;
+           Label {
+               Text: "TPS MENU";
+               Anchor: (Height: 25);
+               Style: (FontSize: 11, TextColor: #4a5568, RenderUppercase: true, LetterSpacing: 2);
+           }
+           Group { Anchor: (Height: 8); }
+           TextButton #CloseButton {
+               Text: "> Dashboard";
+               Anchor: (Width: 100, Height: 36);
+               Style: @CloseButtonStyle2;
+           }
+           TextButton #CloseButton {
+               Text: "  Settings";
+               Anchor: (Width: 100, Height: 36);
+               Style: @CloseButtonStyle2;
+           }
+           TextButton #CloseButton {
+                Text: "  About!";
+                Anchor: (Width: 100, Height: 36);
+                Style: @CloseButtonStyle2;
+           }
         }
+        Group {
+            FlexWeight: 1;
+            LayoutMode: Bottom;
+            $C.@CheckBoxWithLabel #FillModeCheckbox {
+                @Text = "Live Update";
+                @Checked = true;
+                //Style: (LabelStyle: (FontSize: 13, TextColor: #96a9be, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center));
+                TooltipText: "Enables live TPS updates every second.";
+                TextTooltipStyle: $C.@DefaultTextTooltipStyle;
+            }
+       }
 
-        Group { Anchor: (Height: 8); }
-
-        TextButton #CloseButton {
-            Text: "> Dashboard";
-            Anchor: (Width: 100, Height: 36);
-            Style: @CloseButtonStyle2;
-        }
-
-        TextButton #CloseButton {
-            Text: "  Settings";
-            Anchor: (Width: 100, Height: 36);
-            Style: @CloseButtonStyle2;
-        }
-
-        TextButton #CloseButton {
-            Text: "  About";
-            Anchor: (Width: 100, Height: 36);
-            Style: @CloseButtonStyle2;
-        }
     }
-
     Group #RightPanel {
         FlexWeight: 1;
         Background: #141c26(0.98);
@@ -74,7 +91,7 @@ Group {
         }
 
         Group {
-            Anchor: (Height: 1);
+            Anchor: (Height: 2);
             Background: #2b3542;
         }
 
@@ -125,154 +142,1075 @@ Group {
                 }
             }
         }
+        Group { Anchor: (Height: 16); }
 
-        Group { FlexWeight: 1; }
+        Group #TenSecondStats {
+            LayoutMode: Top;
 
 
-        Group #Barrid {
-            LayoutMode: Left;
-            Anchor: (Height: 70);
-
-            Group {
-                FlexWeight: 1;
+            Group #StatsGrid {
                 LayoutMode: Center;
+                Anchor: (Height: 13);
 
-                TextButton {
-                    Text: "";
-                    Anchor: (Width: 10, Height: 40);
-                    Style: @TpsButtonStyle;
+                Group {
+                    FlexWeight: 1;
+                    LayoutMode: Left;
+                    Label {
+                        Text: "10sec";
+                        Anchor: (Height: 13);
+                        Style: (FontSize: 13, TextColor: #6e7da1, Alignment: Center);
+                    }
                 }
-                Group { Anchor: (Width: @Spacer); }
 
-                TextButton  {
-                    Text: "";
-                    Anchor: (Width: 10, Height: 40);
-                    Style: @TpsButtonStyle;
+                Group {
+                    LayoutMode: Right;
+                    Group {
+                        FlexWeight: 1;
+                        LayoutMode: Center;
+                        Label #TenSecondCurrentTps {
+                            Text: "Current: 5.1";
+                            Anchor: (Height: 13);
+                            Style: (FontSize: 13, TextColor: #6e7da1, Alignment: Center);
+                        }
+                        Group { Anchor: @Spacer; }
+                        Label {
+                            Text: " Ø 4.8 ";
+                            Anchor: (Height: 13);
+                            Style: (FontSize: 13, TextColor: #6e7da1, Alignment: Center);
+                        }
+                        Group { Anchor: @Spacer; }
+                        Label {
+                            Text: "100%";
+                            Anchor: (Height: 13);
+                            Style: (FontSize: 13, TextColor: #6e7da1, Alignment: Center);
+                        }
+                    }
                 }
-                Group { Anchor: (Width: @Spacer); }
-                TextButton {
-                    Text: "";
-                    Anchor: (Width: 10, Height: 40);
-                    Style: @TpsButtonStyle;
-                }
-                Group { Anchor: (Width: @Spacer); }
-                TextButton {
-                    Text: "";
-                    Anchor: (Width: 10, Height: 40);
-                    Style: @TpsButtonStyle;
-                }
-                Group { Anchor: (Width: @Spacer); }
-                TextButton  {
-                    Text: "";
-                    Anchor: (Width: 10, Height: 40);
-                    Style: @TpsButtonStyle;
-                }
-                Group { Anchor: (Width: @Spacer); }
-                TextButton  {
-                    Text: "";
-                    Anchor: (Width: 10, Height: 40);
-                    Style: @TpsButtonStyle;
-                }
-                Group { Anchor: (Width: @Spacer); }
-                TextButton{
-                    Text: "";
-                    Anchor: (Width: 10, Height: 40);
-                    Style: @TpsButtonStyle;
-                }
-                Group { Anchor: (Width: @Spacer); }
-                TextButton {
-                    Text: "";
-                    Anchor: (Width: 10, Height: 40);
-                    Style: @TpsButtonStyle;
-                }
-                Group { Anchor: (Width: @Spacer); }
-                TextButton  {
-                    Text: "";
-                    Anchor: (Width: 10, Height: 40);
-                    Style: @TpsButtonStyle;
-                }
-                Group { Anchor: (Width: @Spacer); }
-                TextButton {
-                    Text: "";
-                    Anchor: (Width: 10, Height: 40);
-                    Style: @TpsButtonStyle;
-                }
-                Group { Anchor: (Width: @Spacer); }
-                TextButton {
-                    Text: "";
-                    Anchor: (Width: 10, Height: 40);
-                    Style: @TpsButtonStyle;
-                }
-                Group { Anchor: (Width: @Spacer); }
-                TextButton {
-                    Text: "";
-                    Anchor: (Width: 10, Height: 40);
-                    Style: @TpsButtonStyle;
-                }
-                Group { Anchor: (Width: @Spacer); }
+            }
 
-                TextButton  {
-                    Text: "";
-                    Anchor: (Width: 10, Height: 40);
-                    Style: @TpsButtonStyle;
-                }
-                Group { Anchor: (Width: @Spacer); }
-                TextButton {
-                    Text: "";
-                    Anchor: (Width: 10, Height: 40);
-                    Style: @TpsButtonStyle;
-                }
-                Group { Anchor: (Width: @Spacer); }
-                TextButton {
-                    Text: "";
-                    Anchor: (Width: 10, Height: 40);
-                    Style: @TpsButtonStyle;
-                }
-                Group { Anchor: (Width: @Spacer); }
-                TextButton  {
-                    Text: "";
-                    Anchor: (Width: 10, Height: 40);
-                    Style: @TpsButtonStyle;
-                }
-                Group { Anchor: (Width: @Spacer); }
-                TextButton  {
-                    Text: "";
-                    Anchor: (Width: 10, Height: 40);
-                    Style: @TpsButtonStyle;
-                }
-                Group { Anchor: (Width: @Spacer); }
-                TextButton{
-                    Text: "";
-                    Anchor: (Width: 10, Height: 40);
-                    Style: @TpsButtonStyle;
-                }
-                Group { Anchor: (Width: @Spacer); }
-                TextButton {
-                    Text: "";
-                    Anchor: (Width: 10, Height: 40);
-                    Style: @TpsButtonStyle;
-                }
-                Group { Anchor: (Width: @Spacer); }
-                TextButton  {
-                    Text: "";
-                    Anchor: (Width: 10, Height: 40);
-                    Style: @TpsButtonStyle;
-                }
-                Group { Anchor: (Width: @Spacer); }
-                TextButton {
-                    Text: "";
-                    Anchor: (Width: 10, Height: 40);
-                    Style: @TpsButtonStyle;
-                }
-                Group { Anchor: (Width: @Spacer); }
-                TextButton {
-                    Text: "";
-                    Anchor: (Width: 10, Height: 40);
-                    Style: @TpsButtonStyle;
+            Group { Anchor: (Height: 4); }
+
+            Group #TenSecondStatsBarrid {
+                LayoutMode: Left;
+                Anchor: (Height: 40);
+
+                Group {
+                    FlexWeight: 1;
+                    LayoutMode: Center;
+
+                    TextButton {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: $C.@DefaultTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                       TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+10:10 - 10:14
+
+Ø  TPS: 4.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton {
+                        Text: "";
+                        Anchor:@StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+10:10 - 10:14
+
+Ø  TPS: 4.8 | MSPT: 19ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+10:10 - 10:14
+
+Ø  TPS: 31.8 | MSPT: 19ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton{
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+
                 }
 
             }
+        }
 
+
+       Group { Anchor: (Height: 15); }
+        Group #TenSecondStats {
+            LayoutMode: Top;
+
+
+            Group #StatsGrid {
+                LayoutMode: Center;
+                Anchor: (Height: 13);
+
+                Group {
+                    FlexWeight: 1;
+                    LayoutMode: Left;
+                    Label {
+                        Text: "1min";
+                        Anchor: (Height: 13);
+                        Style: (FontSize: 13, TextColor: #6e7da1, Alignment: Center);
+                    }
+                }
+
+                Group {
+                    LayoutMode: Right;
+                    Group {
+                        FlexWeight: 1;
+                        LayoutMode: Center;
+                        Label {
+                            Text: "Current: 5.1";
+                            Anchor: (Height: 13);
+                            Style: (FontSize: 13, TextColor: #6e7da1, Alignment: Center);
+                        }
+                        Group { Anchor: @Spacer; }
+                        Label {
+                            Text: " Ø 4.8 ";
+                            Anchor: (Height: 13);
+                            Style: (FontSize: 13, TextColor: #6e7da1, Alignment: Center);
+                        }
+                        Group { Anchor: @Spacer; }
+                        Label {
+                            Text: "100%";
+                            Anchor: (Height: 13);
+                            Style: (FontSize: 13, TextColor: #6e7da1, Alignment: Center);
+                        }
+                    }
+                }
+            }
+            Group { Anchor: (Height: 3); }
+
+            Group #TenSecondStatsBarrid {
+                LayoutMode: Left;
+                Anchor: (Height: 40);
+
+                Group {
+                    FlexWeight: 1;
+                    LayoutMode: Center;
+
+                    TextButton {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton {
+                        Text: "";
+                        Anchor:@StatusStyle;
+                        Style: @TpsButtonStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton{
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+
+                }
+
+            }
+        }
+
+        Group { Anchor: (Height: 15); }
+
+
+        Group #TenSecondStats {
+            LayoutMode: Top;
+
+
+            Group #StatsGrid {
+                LayoutMode: Center;
+                Anchor: (Height: 13);
+
+                Group {
+                    FlexWeight: 1;
+                    LayoutMode: Left;
+                    Label {
+                        Text: "5min";
+                        Anchor: (Height: 13);
+                        Style: (FontSize: 13, TextColor: #6e7da1, Alignment: Center);
+                    }
+                }
+
+                Group {
+                    LayoutMode: Right;
+                    Group {
+                        FlexWeight: 1;
+                        LayoutMode: Center;
+                        Label {
+                            Text: "19:00-19:04: 5.1";
+                            Anchor: (Height: 13);
+                            Style: (FontSize: 13, TextColor: #6e7da1, Alignment: Center);
+                        }
+                        Group { Anchor: @Spacer; }
+                        Label {
+                            Text: " Ø 4.8 ";
+                            Anchor: (Height: 13);
+                            Style: (FontSize: 13, TextColor: #6e7da1, Alignment: Center);
+                        }
+                        Group { Anchor: @Spacer; }
+                        Label {
+                            Text: "100%";
+                            Anchor: (Height: 13);
+                            Style: (FontSize: 13, TextColor: #6e7da1, Alignment: Center);
+                        }
+                    }
+                }
+            }
+
+            Group { Anchor: (Height: 3); }
+
+            Group #TenSecondStatsBarrid {
+                LayoutMode: Left;
+                Anchor: (Height: 40);
+
+                Group {
+                    FlexWeight: 1;
+                    LayoutMode: Center;
+
+                    TextButton {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton {
+                        Text: "";
+                        Anchor:@StatusStyle;
+                        Style: @TpsButtonStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton{
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+                    Group { Anchor: @Spacer; }
+                    TextButton  {
+                        Text: "";
+                        Anchor: @StatusStyle;
+                        Style: @TpsButtonStyle;
+                        TooltipText: "
+TPS Metrics:
+19:10 - 10:31
+
+Ø  TPS: 13.8 | MSPT: 195ms
+
+Performance is 100%
+";
+                        TextTooltipStyle: @CustomTextTooltipStyle;
+                    }
+
+                }
+
+            }
         }
 
     }

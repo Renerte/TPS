@@ -9,7 +9,7 @@ import de.shiirroo.tps.hud.TpsHud;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 import org.jetbrains.annotations.NotNull;
 
-public class MultipleHudAdapter implements HudAdapter {
+public class MultipleHudAdapterV1 implements HudAdapter {
     public void setCustomHud (@NonNullDecl Player player, @NonNullDecl PlayerRef playerRef, @NonNullDecl String hudIdentifier, @NonNullDecl CustomUIHud hud) {
         MultipleHUD.getInstance().setCustomHud(player, playerRef, hudIdentifier, hud);
     }

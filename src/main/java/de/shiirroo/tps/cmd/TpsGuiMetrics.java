@@ -1,8 +1,8 @@
 package de.shiirroo.tps.cmd;
 
+import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractAsyncCommand;
-import de.shiirroo.tps.Tps;
 import de.shiirroo.tps.hud.TpsManager;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
@@ -21,22 +21,16 @@ public class TpsGuiMetrics extends AbstractAsyncCommand {
     }
 
     private void sendTpsHistoryToConsole() {
-        tpsManager.getHistory().forEach((worldName, tpsWorldHistory) -> {
-            Tps.getLog().info("TPS History for world: " + worldName);
-            tpsWorldHistory.getTpsData().forEach((metricsTime, tpsDataList) -> {
-                Tps.getLog().info("  Metrics Time: " + metricsTime + " (Max Records: " + metricsTime.getMaxRecords() + " Records Stored: " + tpsDataList.size() + ")");
-                Tps.getLog().info("    Average TPS: " + String.format("%.2f", tpsWorldHistory.getAverageTps(metricsTime)) +
-                        " | Average MSPT: " + String.format("%.2f", tpsWorldHistory.getAverageMspt(metricsTime)));
-                tpsDataList.forEach(tpsData -> {
-                    Tps.getLog().info("    Time Range: " + tpsData.range() + " | TPS: " + String.format("%.2f", tpsData.tps()) + " | MSPT: " + String.format("%.2f", tpsData.mspt()));
-                });
-            });
+        tpsManager.getSettings().load();
 
-        });
     }
 
     @Override
     protected @NotNull CompletableFuture<Void> executeAsync(@NotNull CommandContext paramCommandContext) {
+        if (!paramCommandContext.sender().hasPermission("tps.command.tps.showMetrics")) {
+            paramCommandContext.sender().sendMessage(Message.parse("You don't have permission to use this command."));
+            return CompletableFuture.completedFuture(null);
+        }
         return CompletableFuture.runAsync(this::sendTpsHistoryToConsole);
     }
 }

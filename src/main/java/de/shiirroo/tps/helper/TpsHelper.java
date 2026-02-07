@@ -1,9 +1,10 @@
-package de.shiirroo.tps;
+package de.shiirroo.tps.helper;
 
 import com.hypixel.hytale.metrics.metric.HistoricMetric;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.commands.world.perf.WorldPerfCommand;
+import de.shiirroo.tps.MetricsTime;
 
 import java.awt.*;
 import java.util.logging.Logger;
@@ -39,9 +40,20 @@ public class TpsHelper {
     }
 
     public static double getTPS(World world, MetricsTime metricsTime) {
+        if (metricsTime == MetricsTime.NOW) return getLiveTPS(world);
         final var tickStepNanos = world.getTickStepNanos();
         HistoricMetric metrics = world.getBufferedTickLengthMetricSet();
         return WorldPerfCommand.tpsFromDelta(metrics.getAverage(metricsTime.getIndex()), tickStepNanos);
+    }
+
+    public static double getTPSAvg(World world, MetricsTime metricsTime) {
+        if (metricsTime == MetricsTime.NOW) return getLiveTPS(world);
+        return getTPS(world, metricsTime);
+    }
+
+    public static double getMSPTAvg(World world, MetricsTime metricsTime) {
+        if (metricsTime == MetricsTime.NOW) return getLiveMspt(world);
+        return getMspt(world, metricsTime);
     }
 
     public static double getLiveTPS(World world) {
@@ -56,6 +68,7 @@ public class TpsHelper {
     }
 
     public static double getMspt(World world, MetricsTime metricsTime) {
+        if (metricsTime == MetricsTime.NOW) return getLiveMspt(world);
         HistoricMetric metrics = world.getBufferedTickLengthMetricSet();
         double avgTickNanos = metrics.getAverage(metricsTime.getIndex());
         return avgTickNanos / MS;
@@ -63,4 +76,24 @@ public class TpsHelper {
     public static double getMaxMSPT(World world) {
         return world.getTickStepNanos() / MS;
     }
+
+    public static Integer parseInteger(String value) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+
+    public static Integer parseLong(String value) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+
+
+
+
 }

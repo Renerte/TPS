@@ -23,6 +23,10 @@ public class TpsReload extends AbstractAsyncCommand {
 
     @Override
     protected @NotNull CompletableFuture<Void> executeAsync(@NotNull CommandContext paramCommandContext) {
+        if (!paramCommandContext.sender().hasPermission("tps.command.tps.reload")) {
+            paramCommandContext.sender().sendMessage(Message.parse("You don't have permission to use this command."));
+            return CompletableFuture.completedFuture(null);
+        }
         var future = tpsManager.getSettings().load();
         future.thenAccept(response -> {
             paramCommandContext.sendMessage(Message.raw("TPS config reloaded"));

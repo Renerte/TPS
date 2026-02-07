@@ -21,8 +21,16 @@ public class HudAdapterSelector implements HudAdapter {
             hudAdapter = new DefaultHudAdapter();
             Tps.getLog().severe("MultipleHUD plugin not found. Mod won't be compatible with other HUD mods.");
         } else {
-            Tps.getLog().info("MultipleHUD plugin is compatible with other HUD mods.");
-            hudAdapter = new MultipleHudAdapter();
+            long major = plugin.getManifest().getVersion().getMajor();
+            long minor = plugin.getManifest().getVersion().getMinor();
+            long patch = plugin.getManifest().getVersion().getPatch();
+            if (patch <= 3) {
+                Tps.getLog().info("MultipleHUD plugin version 1.0.3 or lower found. Mod is compatible with other HUD mods, using MultipleHudAdapterV1.");
+                hudAdapter = new MultipleHudAdapterV1();
+            } else {
+                Tps.getLog().info("MultipleHUD plugin version higher than 1.0.3 found. Mod is compatible with other HUD mods, using MultipleHudAdapterV2.");
+                hudAdapter = new MultipleHudAdapterV2();
+            }
         }
     }
 

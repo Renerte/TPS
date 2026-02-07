@@ -9,21 +9,26 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.core.util.Config;
 import de.shiirroo.tps.MetricsTime;
-import de.shiirroo.tps.TPSConfig;
-import de.shiirroo.tps.TpsHelper;
-import de.shiirroo.tps.history.TpsTimeRange;
-import de.shiirroo.tps.history.TpsWorldHistory;
+import de.shiirroo.tps.config.TPSConfig;
+import de.shiirroo.tps.Tps;
+import de.shiirroo.tps.helper.TpsHelper;
+import de.shiirroo.tps.history.TpsHistory;
+import de.shiirroo.tps.history.TpsMetrics;
+import de.shiirroo.tps.history.WorldMetrics;
 import de.shiirroo.tps.hud.adapter.HudAdapterSelector;
+import de.shiirroo.tps.kumo.TPSWebsocket;
+import de.shiirroo.tps.kumo.TpsData;
 import de.shiirroo.tps.page.TpsGuiPage;
 import lombok.Getter;
 
 import java.awt.*;
+import java.net.URI;
 import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 
 public class TpsManager implements Runnable {
@@ -32,19 +37,34 @@ public class TpsManager implements Runnable {
     private final List<UUID> playersWithGui = new ArrayList<>();
     private final static String HUD_ID = "TpsHud";
     @Getter
-    private final ConcurrentHashMap<String, TpsWorldHistory> history = new ConcurrentHashMap<>();
-    private final EnumMap<MetricsTime, Integer> index = new EnumMap<>(MetricsTime.class);
+    private final EnumMap<MetricsTime, Integer> metricsUpdateTime = new EnumMap<>(MetricsTime.class);
     @Getter
     private final Config<TPSConfig> settings;
     private long lastWarningTime = 0;
-    private static long WARNING_COOLDOWN_MS = 59 * 1000;
+    private static final long WARNING_COOLDOWN_MS = 59 * 1000;
+    private TPSWebsocket tpsWebsocket;
 
     public TpsManager(Config<TPSConfig> settings) {
         this.settings = settings;
+        this.initializeKumoWebSocket();
     }
 
+
+    public void initializeKumoWebSocket() {
+        if(settings.get().getKumoConfig().isEnableKumoSupport()) {
+            try {
+                tpsWebsocket = new TPSWebsocket(URI.create(settings.get().getKumoConfig().getKumoURL()), settings);
+                tpsWebsocket.connect();
+                Tps.getLog().info("Kumo Websocket initialized");
+            } catch (Exception e) {
+                Tps.getLog().severe("Failed to initialize Kumo WebSocket: " + e.getMessage());
+            }
+        }
+    }
+
+
     public void update() {
-        if (settings.get().isEnableMetrics())  updateTpsHistory();
+        if (settings.get().getMetricsConfig().isEnableMetrics())  updateTpsHistory();
         if (settings.get().isEnableTPSWarning()) sendTPSWaring();
         updatePlayers(playersWithHud, this::updateHud);
         updatePlayers(playersWithGui, this::updateGui);
@@ -79,10 +99,46 @@ public class TpsManager implements Runnable {
     }
 
     private void updateTpsHistory() {
-        int secondOfDay = LocalTime.now().toSecondOfDay();
-        checkRange(secondOfDay, MetricsTime.TEN_SECONDS);
-        checkRange(secondOfDay, MetricsTime.ONE_MINUTE);
-        checkRange(secondOfDay, MetricsTime.FIVE_MINUTES);
+        try {
+            int secondOfDay = LocalTime.now().toSecondOfDay();
+            ZonedDateTime now = ZonedDateTime.now();
+            ArrayList<TpsMetrics> newRecords = new ArrayList<>();
+            MetricsTime[] metricsTimes = new MetricsTime[MetricsTime.values().length];
+            for (int i = 0; i < MetricsTime.values().length; i++) {
+                MetricsTime mt = MetricsTime.values()[i];
+                int currentIndex = secondOfDay / mt.getSeconds();
+                boolean range = checkRange(currentIndex, mt);
+                if (!range) metricsTimes[i] = mt;
+            }
+
+            if (metricsTimes.length > 0) {
+                Universe.get().getWorlds().forEach((worldName, world) -> {
+                    TpsMetrics tpsMetrics = new TpsMetrics(worldName, world.getWorldConfig().getUuid(), now);
+                    for (MetricsTime time : metricsTimes) {
+                        if (time == null) continue;
+                        double tps = time.getTps(world);
+                        double mspt = time.getMspt(world);
+                        WorldMetrics worldMetrics = new WorldMetrics(world, time);
+                        TpsHistory.get().addMetrics(world, time, worldMetrics);
+                        tpsMetrics.addTpsMspt(time, tps, mspt);
+                    }
+                    newRecords.add(tpsMetrics);
+                });
+
+            }
+
+
+
+            TpsData dataDTO = new TpsData(newRecords);
+            if (settings.get().getKumoConfig().isEnableKumoSupport() && tpsWebsocket != null && tpsWebsocket.isOpen()) {
+                tpsWebsocket.sendTPS(dataDTO);
+            }
+
+
+
+        } catch (Exception e) {
+            Tps.getLog().severe("TPS History update failed: " + e.getMessage());
+        }
     }
 
     private void sendTPSWaring(){
@@ -92,8 +148,8 @@ public class TpsManager implements Runnable {
         }
         Universe.get().getWorlds().forEach((worldName, world) -> {
             world.execute(() -> {
-                double tps = MetricsTime.ONE_MINUTE.getTps(world);
-                if (tps < settings.get().getWarningThreshold()) {
+                WorldMetrics currentMetrics = new WorldMetrics(world, MetricsTime.TEN_SECONDS);
+                if (currentMetrics.getTps() < settings.get().getWarningThreshold()) {
                     for (PlayerRef playerRef : world.getPlayerRefs()) {
                         Ref<EntityStore> ref = playerRef.getReference();
                         if (ref == null) continue;
@@ -104,7 +160,7 @@ public class TpsManager implements Runnable {
                             Message second = Message.raw("The TPS of world ").color(Color.LIGHT_GRAY);
                             Message worldMessage = Message.raw(worldName).color(Color.ORANGE);
                             Message third = Message.raw(" was below the threshold! The Last 1 minute average TPS is: ").color(Color.LIGHT_GRAY);
-                            Message tpsMessage = TpsHelper.colorizeTps(tps, world.getTps());
+                            Message tpsMessage = TpsHelper.colorizeTps(currentMetrics.getTps(), world.getTps());
                             player.sendMessage(first.insert(second).insert(worldMessage).insert(third).insert(tpsMessage));
                         }
                     }
@@ -114,27 +170,15 @@ public class TpsManager implements Runnable {
         lastWarningTime = currentTime;
     }
 
-    private void checkRange(int secondOfDay, MetricsTime mt) {
-        int currentIndex = secondOfDay / mt.getSeconds();
-
-        Integer last = index.get(mt);
-        if (last != null && currentIndex <= last) return;
-        if (last != null) {
-            int prevIndex = last;
-            TpsTimeRange range = new TpsTimeRange(prevIndex * mt.getSeconds(), mt.getSeconds());
-            addRecordForAllWorlds(mt, range);
-        }
-        index.put(mt, currentIndex);
+    private boolean checkRange(int currentIndex, MetricsTime mt) {
+        Integer last = metricsUpdateTime.getOrDefault(mt, 0);
+        boolean isInRange = currentIndex  <= last;
+        if (!isInRange) metricsUpdateTime.put(mt, currentIndex);
+        return isInRange;
     }
 
-    private void addRecordForAllWorlds(MetricsTime mt, TpsTimeRange range) {
-        Universe.get().getWorlds().forEach((worldName, world) -> {
-            double tps  = mt.getTps(world);
-            double mspt = mt.getMspt(world);
-            var history = this.history.computeIfAbsent(worldName, TpsWorldHistory::new);
-            history.addTpsRecord(mt, range, tps, mspt);
-        });
-    }
+
+
 
 
     public void addGui(PlayerRef playerRef) {

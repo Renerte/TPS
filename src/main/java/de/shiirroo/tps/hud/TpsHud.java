@@ -9,7 +9,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import de.shiirroo.tps.Tps;
-import de.shiirroo.tps.TpsHelper;
+import de.shiirroo.tps.helper.TpsHelper;
 
 public class TpsHud extends CustomUIHud {
 

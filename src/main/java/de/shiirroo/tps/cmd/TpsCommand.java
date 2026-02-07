@@ -6,7 +6,7 @@ import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
 import com.hypixel.hytale.server.core.universe.Universe;
 import de.shiirroo.tps.MetricsTime;
 import de.shiirroo.tps.Tps;
-import de.shiirroo.tps.TpsHelper;
+import de.shiirroo.tps.helper.TpsHelper;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -16,16 +16,20 @@ public class TpsCommand extends CommandBase {
     public TpsCommand() {
         super("tps", "Shows the TPS of all worlds.", false);
         requirePermission("tps.command.tps");
-        addSubCommand(new TpsShow(Tps.getInstance().getTpsManager()));
+        addSubCommand(new TpsShow(Tps.get().getTpsManager()));
         addSubCommand(new TpsGui());
-        addSubCommand(new TpsGuiMetrics(Tps.getInstance().getTpsManager()));
-        addSubCommand(new TpsReload(Tps.getInstance().getTpsManager()));
-        addSubCommand(new TpsMetrics(Tps.getInstance().getTpsManager()));
-        addSubCommand(new TpsWarning(Tps.getInstance().getTpsManager()));
+        addSubCommand(new TpsGuiMetrics(Tps.get().getTpsManager()));
+        addSubCommand(new TpsReload(Tps.get().getTpsManager()));
+        addSubCommand(new TpsMetrics(Tps.get().getTpsManager()));
+        addSubCommand(new TpsWarning(Tps.get().getTpsManager()));
     }
 
     @Override
     protected void executeSync(@NotNull CommandContext context) {
+        if (!context.sender().hasPermission("tps.command.tps")) {
+            context.sender().sendMessage(Message.parse("You don't have permission to use this command."));
+            return;
+        }
         Universe universe = Universe.get();
         if (universe.getWorlds().isEmpty()) {
             context.sendMessage(Message.raw("No worlds found.").color(Color.RED));

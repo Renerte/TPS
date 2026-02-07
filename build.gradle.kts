@@ -21,11 +21,13 @@ dependencies {
 
     compileOnly(fileTree("libs") { include("*.jar") })
 
-    implementation("com.google.code.gson:gson:2.10.1")
     implementation("org.jetbrains:annotations:24.1.0")
+    implementation("com.google.code.gson:gson:2.11.0")
+
 
     compileOnly("org.projectlombok:lombok:1.18.42")
     annotationProcessor("org.projectlombok:lombok:1.18.42")
+    implementation("org.java-websocket:Java-WebSocket:1.5.6")
 
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
@@ -69,7 +71,7 @@ tasks {
         archiveBaseName.set(rootProject.name)
         archiveClassifier.set("")
 
-        relocate("com.google.gson", "de.shiirrooo.libs.gson")
+        relocate("com.google.gson", "de.shiirroo.libs.gson")
 
         minimize()
     }

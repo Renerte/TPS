@@ -13,8 +13,9 @@ import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import de.shiirroo.tps.MetricsTime;
 import de.shiirroo.tps.Tps;
-import de.shiirroo.tps.TpsHelper;
+import de.shiirroo.tps.helper.TpsHelper;
 
 import javax.annotation.Nonnull;
 
@@ -23,6 +24,16 @@ public class TpsGuiPage extends InteractiveCustomUIPage<TpsGuiPage.CloseEventDat
     // Data passed via constructor - will be displayed in UI
     private double live_tps;
     private double live_mspt;
+    private double ten_sec_current_tps;
+    private double ten_sec_avgerage_tps;
+
+    public TpsGuiPage(PlayerRef playerRef, double liveTps, double liveMspt, double tenSecCurrentTps, double tenSecAvgerageTps) {
+        super(playerRef, CustomPageLifetime.CanDismissOrCloseThroughInteraction, CloseEventData.CODEC);
+        this.live_tps = liveTps;
+        this.live_mspt = liveMspt;
+        this.ten_sec_current_tps = tenSecCurrentTps;
+        this.ten_sec_avgerage_tps = tenSecAvgerageTps;
+    }
 
     /**
      * Empty EventData - we only need to handle the close button.
@@ -44,9 +55,6 @@ public class TpsGuiPage extends InteractiveCustomUIPage<TpsGuiPage.CloseEventDat
     @Override
     public void build(@Nonnull Ref<EntityStore> ref, @Nonnull UICommandBuilder cmd, @Nonnull UIEventBuilder evt, @Nonnull Store<EntityStore> store) {
         cmd.append("Pages/TPSPage.ui");
-        Player player = store.getComponent(ref, Player.getComponentType());
-        if (player == null) return;
-        if (player.getWorld() == null) return;
         updateValues(cmd, evt);
     }
 
@@ -55,7 +63,7 @@ public class TpsGuiPage extends InteractiveCustomUIPage<TpsGuiPage.CloseEventDat
         Player player = store.getComponent(ref, Player.getComponentType());
         if (player == null) return;
         
-        Tps.getInstance().getTpsManager().removeGui(this.playerRef);
+        Tps.get().getTpsManager().removeGui(this.playerRef);
         player.getPageManager().setPage(ref, store, Page.None);
     }
 
@@ -63,12 +71,21 @@ public class TpsGuiPage extends InteractiveCustomUIPage<TpsGuiPage.CloseEventDat
     private void updateValues(UICommandBuilder cmd, UIEventBuilder evt) {
         cmd.set("#TpsValue.Text", String.valueOf(live_tps));
         cmd.set("#MsptValue.Text", String.valueOf(live_mspt));
+
+        //cmd.set("#TenSecondCurrentTps.Text", "Current: " + String.format("%.2f ms", ten_sec_avgerage_tps));
+
+       // cmd.set("#TenSecondAverageTps.Text", "Ø " + ten_sec_current_tps);
+
         evt.addEventBinding(CustomUIEventBindingType.Activating, "#CloseButton");
+
+
     }
 
     public void updatePlayerHud(World world) {
         this.live_tps = TpsHelper.getLiveTPS(world);
         this.live_mspt = TpsHelper.getLiveMspt(world);
+        this.ten_sec_current_tps = TpsHelper.getMSPTAvg(world, MetricsTime.TEN_SECONDS);
+        this.ten_sec_avgerage_tps = TpsHelper.getMSPTAvg(world, MetricsTime.TEN_SECONDS);
         UICommandBuilder cmd = new UICommandBuilder();
         UIEventBuilder evt = new UIEventBuilder();
         updateValues(cmd, evt);
