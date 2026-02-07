@@ -48,7 +48,7 @@ public class Tps extends JavaPlugin {
         getCommandRegistry().registerCommand(new TpsCommand());
         Logger.getLogger(Tps.class.getName()).log(Level.INFO, PREFIX + "Plugin enabled!!");
         tpsTask = HytaleServer.SCHEDULED_EXECUTOR.scheduleAtFixedRate(tpsManager, 0, 1, TimeUnit.SECONDS);
-        WebAdapterSelector.get().registerWebServer();
+        if(this.config.get().getWebServerConfig().isEnableWebServer()) WebAdapterSelector.get().registerWebServer();
     }
 
     @Override
@@ -62,7 +62,7 @@ public class Tps extends JavaPlugin {
         if (tpsTask != null && !tpsTask.isCancelled()) {
             tpsTask.cancel(true);
         }
-        WebAdapterSelector.get().unregisterWebServer();
+        if(this.config.get().getWebServerConfig().isEnableWebServer())   WebAdapterSelector.get().unregisterWebServer();
     }
 
     public static Tps get() {

@@ -19,6 +19,11 @@ public class WebServerConfig {
             .append(new KeyedCodec<Integer>("Port", Codec.INTEGER),
                     (WebServerConfig, newKey, extraInfo) -> WebServerConfig.Port = newKey,
                     (WebServerConfig, extraInfo) -> WebServerConfig.Port).add()
+            .append(new KeyedCodec<Boolean>("HttpOnly", Codec.BOOLEAN),
+                    (WebServerConfig, newbool, extraInfo) -> WebServerConfig.HttpOnly = newbool,
+                    (WebServerConfig, BindIP) -> WebServerConfig.HttpOnly).add()
+
+
             .build();
 
 
@@ -26,8 +31,10 @@ public class WebServerConfig {
     @Getter @Setter
     private boolean EnableWebServer = false;
     @Getter @Setter
-    private String BindIP = "127.0.0.1";
+    private String BindIP = "0.0.0.0";
     @Getter @Setter
     private Integer Port = 3001;
+    @Getter
+    private boolean HttpOnly = true;
 
 }
