@@ -28,8 +28,21 @@ public class TpsHistory {
         return instance;
     }
 
+
+    public String getQueryMetricsAsJson(String query) {
+        if (query == null || query.isEmpty()) return asJson();
+        if (query.equals("latest")) {
+            return latestMetricsAsJson();
+        }
+        return asJson();
+    }
+
     public String asJson() {
         return history.values().stream().map(TpsWorldHistory::toJson).collect(java.util.stream.Collectors.joining(",", "[", "]"));
+    }
+
+    public String latestMetricsAsJson() {
+        return history.values().stream().map(TpsWorldHistory::getLatestMetrics).map(TpsWorldHistory::toJson).collect(java.util.stream.Collectors.joining(",", "[", "]"));
     }
 
 }

@@ -1,4 +1,4 @@
-package de.shiirroo.tps.webserver.adapter;
+package de.shiirroo.tps.web.adapter;
 
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpsConfigurator;
@@ -7,7 +7,7 @@ import com.sun.net.httpserver.HttpsServer;
 import de.shiirroo.tps.Tps;
 import de.shiirroo.tps.helper.Utilities;
 import de.shiirroo.tps.history.TpsHistory;
-import de.shiirroo.tps.webserver.WebServerConfig;
+import de.shiirroo.tps.web.WebServerConfig;
 import lombok.Getter;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.net.InetSocketAddress;
 import java.security.*;
+import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Date;
@@ -39,11 +40,12 @@ class DefaultWebAdapter implements WebAdapter {
             var config = Tps.get().getConfig().get().getWebServerConfig();
             server = config.isHttpOnly() ? createHttpServer(config) : createHttpsServer(config);
                 server.createContext("/Shiirroo/TPS", exchange -> {
-                var test = TpsHistory.get().asJson();
-                exchange.getResponseHeaders().set("Content-Type", "application/json; charset=utf-8");
-                exchange.sendResponseHeaders(200, test.getBytes().length);
-                exchange.getResponseBody().write(test.getBytes());
-                exchange.close();
+                    var query = exchange.getRequestURI().getQuery();
+                    String history = TpsHistory.get().getQueryMetricsAsJson(query);
+                    exchange.getResponseHeaders().set("Content-Type", "application/json; charset=utf-8");
+                    exchange.sendResponseHeaders(200, history.getBytes().length);
+                    exchange.getResponseBody().write(history.getBytes());
+                    exchange.close();
             });
             server.start();
             Tps.getLog().info("DefaultWebAdapter: Started embedded "+ (config.isHttpOnly() ? "http" :"https" )+ " server on " + config.getBindIP() + ":" + config.getPort());
@@ -80,7 +82,7 @@ class DefaultWebAdapter implements WebAdapter {
         ks.load(null, null);
 
         var pass  = Utilities.randomPassword(100);
-        ks.setKeyEntry("alias", keyPair.getPrivate(), pass, new java.security.cert.Certificate[]{cert});
+        ks.setKeyEntry("alias", keyPair.getPrivate(), pass, new Certificate[]{cert});
 
         KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
         kmf.init(ks, pass);

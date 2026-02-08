@@ -1,4 +1,4 @@
-package de.shiirroo.tps.webserver.adapter.nitrado;
+package de.shiirroo.tps.web.adapter.nitrado;
 
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import de.shiirroo.tps.history.TpsHistory;
@@ -28,9 +28,11 @@ public class TpsServlet extends TemplateServlet {
     )*/
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        var query = req.getQueryString();
+        String history = TpsHistory.get().getQueryMetricsAsJson(query);
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
-        resp.getWriter().println(TpsHistory.get().asJson());
+        resp.getWriter().println(history);
     }
 
 

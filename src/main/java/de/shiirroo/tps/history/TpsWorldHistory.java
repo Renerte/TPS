@@ -7,6 +7,7 @@ import lombok.Getter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -40,6 +41,17 @@ public class TpsWorldHistory implements Serializable {
 
     public HashMap<MetricsTime, ArrayList<WorldMetrics>> getWorldMetricsMap() {
         return new HashMap<>(worldMetricsMap);
+    }
+
+    public TpsWorldHistory getLatestMetrics() {
+        TpsWorldHistory latestMetrics = new TpsWorldHistory(worldName, UUID.fromString(worldUUID));
+        for (MetricsTime time : worldMetricsMap.keySet()) {
+            ArrayList<WorldMetrics> metricsList = worldMetricsMap.get(time);
+            if (metricsList != null && !metricsList.isEmpty()) {
+                latestMetrics.worldMetricsMap.put(time, new ArrayList<>(Collections.singletonList(metricsList.getLast())));
+            }
+        }
+        return latestMetrics;
     }
 
     public String toJson(){

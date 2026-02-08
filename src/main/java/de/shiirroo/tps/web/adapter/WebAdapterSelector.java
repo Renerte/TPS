@@ -1,9 +1,9 @@
-package de.shiirroo.tps.webserver.adapter;
+package de.shiirroo.tps.web.adapter;
 
 import com.hypixel.hytale.common.plugin.PluginIdentifier;
 import com.hypixel.hytale.server.core.plugin.PluginBase;
 import com.hypixel.hytale.server.core.plugin.PluginManager;
-import de.shiirroo.tps.webserver.adapter.nitrado.NitradoWebServerHudAdapterV1;
+import de.shiirroo.tps.web.adapter.nitrado.NitradoWebServerHudAdapterV1;
 
 public class WebAdapterSelector implements WebAdapter {
 

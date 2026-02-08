@@ -4,7 +4,7 @@ import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import de.shiirroo.tps.kumo.KumoConfig;
-import de.shiirroo.tps.webserver.WebServerConfig;
+import de.shiirroo.tps.web.WebServerConfig;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,7 +24,7 @@ public class TPSConfig {
             .append(new KeyedCodec<KumoConfig>("KumoConfig", de.shiirroo.tps.kumo.KumoConfig.CODEC),
                     (TPSConfig, config, extraInfo) -> TPSConfig.KumoConfig = config,
                     (TPSConfig, extraInfo) -> TPSConfig.KumoConfig).add()
-            .append(new KeyedCodec<WebServerConfig>("WebServerConfig", de.shiirroo.tps.webserver.WebServerConfig.CODEC),
+            .append(new KeyedCodec<WebServerConfig>("WebServerConfig", de.shiirroo.tps.web.WebServerConfig.CODEC),
                     (TPSConfig, config, extraInfo) -> TPSConfig.WebServerConfig = config,
                     (TPSConfig, extraInfo) -> TPSConfig.WebServerConfig).add()
 

@@ -1,4 +1,4 @@
-package de.shiirroo.tps.webserver.adapter;
+package de.shiirroo.tps.web.adapter;
 
 public interface WebAdapter {
 

@@ -1,4 +1,4 @@
-package de.shiirroo.tps.webserver;
+package de.shiirroo.tps.web;
 
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;

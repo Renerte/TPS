@@ -8,7 +8,7 @@ import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import de.shiirroo.tps.cmd.TpsCommand;
 import de.shiirroo.tps.config.TPSConfig;
 import de.shiirroo.tps.hud.TpsManager;
-import de.shiirroo.tps.webserver.adapter.WebAdapterSelector;
+import de.shiirroo.tps.web.adapter.WebAdapterSelector;
 import lombok.Getter;
 import com.hypixel.hytale.server.core.util.Config;
 import org.jetbrains.annotations.NotNull;
