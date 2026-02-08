@@ -3,7 +3,7 @@ package de.shiirroo.tps.cmd;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractAsyncCommand;
-import de.shiirroo.tps.hud.TpsManager;
+import de.shiirroo.tps.manager.TpsManager;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,6 +29,7 @@ public class TpsReload extends AbstractAsyncCommand {
         }
         var future = tpsManager.getSettings().load();
         future.thenAccept(response -> {
+            tpsManager.getTaskManager().updateTasks();
             paramCommandContext.sendMessage(Message.raw("TPS config reloaded"));
 
         });

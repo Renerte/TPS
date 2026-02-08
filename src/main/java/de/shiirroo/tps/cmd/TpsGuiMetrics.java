@@ -3,7 +3,7 @@ package de.shiirroo.tps.cmd;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractAsyncCommand;
-import de.shiirroo.tps.hud.TpsManager;
+import de.shiirroo.tps.manager.TpsManager;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 

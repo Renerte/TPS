@@ -6,6 +6,7 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.codec.codecs.map.EnumMapCodec;
 import com.hypixel.hytale.common.util.MapUtil;
 import de.shiirroo.tps.MetricsTime;
+import de.shiirroo.tps.tasks.Tasks;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,6 +23,10 @@ public class MetricsConfig {
             .append(new KeyedCodec<>("MetricsHistorySize", new EnumMapCodec<>(MetricsTime.class, Codec.INTEGER)),
                     (MetricsConfig, newMap, extraInfo) -> MetricsConfig.MetricsHistorySize = MapUtil.combineUnmodifiable(MetricsConfig.MetricsHistorySize, newMap, () -> new EnumMap<>(MetricsTime.class)),
                     (MetricsConfig, extraInfo) -> MetricsConfig.MetricsHistorySize).add()
+            .append(new KeyedCodec<>("TaskUpdateIntervals", new EnumMapCodec<>(Tasks.class, Codec.INTEGER)),
+                    (MetricsConfig, newMap, extraInfo) -> MetricsConfig.TaskUpdateIntervals = MapUtil.combineUnmodifiable(MetricsConfig.TaskUpdateIntervals, newMap, () -> new EnumMap<>(Tasks.class)),
+                    (MetricsConfig, extraInfo) -> MetricsConfig.TaskUpdateIntervals).add()
+
             .build();
 
 
@@ -30,6 +35,10 @@ public class MetricsConfig {
         for (MetricsTime time : MetricsTime.values()) {
             MetricsHistorySize.put(time, time.getDefaultMaxRecords());
         }
+        for (Tasks task : Tasks.values()) {
+            TaskUpdateIntervals.put(task, task.getDefaultTaskUpdateInterval());
+        }
+
     }
 
 
@@ -37,8 +46,15 @@ public class MetricsConfig {
     private boolean EnableMetrics = false;
     @Getter
     private Map<MetricsTime , Integer> MetricsHistorySize = new EnumMap<>(MetricsTime.class);
+    @Getter
+    private Map<Tasks, Integer> TaskUpdateIntervals = new EnumMap<>(Tasks.class);
 
     public Integer getMetricsHistorySize(MetricsTime time) {
         return MetricsHistorySize.getOrDefault(time, time.getDefaultMaxRecords());
     }
+
+    public Integer getTaskUpdateInterval(Tasks task) {
+        return TaskUpdateIntervals.getOrDefault(task, task.getDefaultTaskUpdateInterval());
+    }
+
 }

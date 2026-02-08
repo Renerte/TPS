@@ -3,7 +3,7 @@ package de.shiirroo.tps.cmd;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractAsyncCommand;
-import de.shiirroo.tps.hud.TpsManager;
+import de.shiirroo.tps.manager.TpsManager;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,6 +32,7 @@ public class TpsMetrics extends AbstractAsyncCommand {
         var bool =  tpsManager.getSettings().get().getMetricsConfig().isEnableMetrics();
         tpsManager.getSettings().get().getMetricsConfig().setEnableMetrics(!bool);
         paramCommandContext.sendMessage(Message.raw("TPS metrics set to: " + !bool));
+        tpsManager.getTaskManager().updateTask(bool, tpsManager.getTaskManager().getMetricsTask());
         return tpsManager.getSettings().save();
     }
 }

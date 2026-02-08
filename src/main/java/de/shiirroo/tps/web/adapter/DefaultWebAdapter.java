@@ -41,7 +41,7 @@ class DefaultWebAdapter implements WebAdapter {
             server = config.isHttpOnly() ? createHttpServer(config) : createHttpsServer(config);
                 server.createContext("/Shiirroo/TPS", exchange -> {
                     var query = exchange.getRequestURI().getQuery();
-                    String history = TpsHistory.get().getQueryMetricsAsJson(query);
+                    String history = TpsHistory.getTPSHistory().getQueryMetricsAsJson(query);
                     exchange.getResponseHeaders().set("Content-Type", "application/json; charset=utf-8");
                     exchange.sendResponseHeaders(200, history.getBytes().length);
                     exchange.getResponseBody().write(history.getBytes());

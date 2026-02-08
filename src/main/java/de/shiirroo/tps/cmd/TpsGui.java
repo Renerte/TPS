@@ -48,6 +48,6 @@ public class TpsGui extends AbstractPlayerCommand {
         TpsGuiPage page = new TpsGuiPage(playerRef, liveTps, liveMspt, ten_sec_current_tps, ten_sec_avgerage_tps);
 
         player.getPageManager().openCustomPage(ref, store, page);
-        Tps.get().getTpsManager().addGui(playerRef);
+        Tps.get().getTpsManager().getTaskManager().getGuiTask().addEffectPlayer(player,playerRef);
     }
 }

@@ -2,6 +2,7 @@ package de.shiirroo.tps.history;
 
 import com.hypixel.hytale.server.core.universe.world.World;
 import de.shiirroo.tps.MetricsTime;
+import de.shiirroo.tps.Tps;
 import lombok.Getter;
 
 import java.util.UUID;
@@ -11,7 +12,6 @@ public class TpsHistory {
 
     @Getter
     private final ConcurrentHashMap<String, TpsWorldHistory> history = new ConcurrentHashMap<>();
-    private static final TpsHistory instance = new TpsHistory();
 
     public TpsHistory() {
     }
@@ -23,11 +23,6 @@ public class TpsHistory {
     public void addMetrics(String worldName, UUID worldUUID, MetricsTime time, WorldMetrics metrics) {
         history.computeIfAbsent(worldName, k -> new TpsWorldHistory(worldName, worldUUID)).addWorldMetrics(time, metrics);
     }
-
-    public static TpsHistory get() {
-        return instance;
-    }
-
 
     public String getQueryMetricsAsJson(String query) {
         if (query == null || query.isEmpty()) return asJson();
@@ -44,5 +39,10 @@ public class TpsHistory {
     public String latestMetricsAsJson() {
         return history.values().stream().map(TpsWorldHistory::getLatestMetrics).map(TpsWorldHistory::toJson).collect(java.util.stream.Collectors.joining(",", "[", "]"));
     }
+
+    public static TpsHistory getTPSHistory() {
+       return Tps.get().getTpsManager().getTaskManager().getMetricsTask().getTpsHistory();
+    }
+
 
 }

@@ -3,7 +3,7 @@ package de.shiirroo.tps.cmd;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractAsyncCommand;
-import de.shiirroo.tps.hud.TpsManager;
+import de.shiirroo.tps.manager.TpsManager;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,6 +30,7 @@ public class TpsWarning extends AbstractAsyncCommand {
         var bool =  tpsManager.getSettings().get().isEnableTPSWarning();
         tpsManager.getSettings().get().setEnableTPSWarning(!bool);
         paramCommandContext.sendMessage(Message.raw("TPS Warning set to: " + !bool));
+        tpsManager.getTaskManager().updateTask(bool, tpsManager.getTaskManager().getWarningTask());
         return tpsManager.getSettings().save();
     }
 }

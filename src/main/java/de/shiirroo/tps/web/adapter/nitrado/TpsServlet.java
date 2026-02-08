@@ -29,7 +29,7 @@ public class TpsServlet extends TemplateServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         var query = req.getQueryString();
-        String history = TpsHistory.get().getQueryMetricsAsJson(query);
+        String history = TpsHistory.getTPSHistory().getQueryMetricsAsJson(query);
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
         resp.getWriter().println(history);

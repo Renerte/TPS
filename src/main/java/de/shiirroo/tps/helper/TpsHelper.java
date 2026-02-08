@@ -5,6 +5,7 @@ import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.commands.world.perf.WorldPerfCommand;
 import de.shiirroo.tps.MetricsTime;
+import de.shiirroo.tps.history.TpsHistory;
 
 import java.awt.*;
 import java.util.logging.Logger;
@@ -93,6 +94,10 @@ public class TpsHelper {
         }
     }
 
+
+    public static TpsHistory getTPSHistory() {
+        return TpsHistory.getTPSHistory();
+    }
 
 
 

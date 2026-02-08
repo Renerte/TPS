@@ -10,7 +10,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import de.shiirroo.tps.Tps;
-import de.shiirroo.tps.hud.TpsManager;
+import de.shiirroo.tps.manager.TpsManager;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,7 +40,7 @@ public class TpsShow extends AbstractPlayerCommand {
                 player.sendMessage(Message.raw("You don't have permission to use this command.").color(Color.RED));
                 return;
             }
-            boolean toggleTo = tpsManager.toggleHud(player, playerRef);
+            boolean toggleTo = tpsManager.getTaskManager().getHudTask().toggleEffectPlayer(player, playerRef);
             if (toggleTo) {
                 player.sendMessage(Message.raw("TPS HUD enabled").color(Color.GREEN));
             } else {
