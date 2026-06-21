@@ -10,12 +10,15 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import de.shiirroo.tps.Tps;
 import de.shiirroo.tps.helper.TpsHelper;
+import lombok.Getter;
 
 public class TpsHud extends CustomUIHud {
+    @Getter
+    public final static String HUD_ID = "TpsHud";
 
 
     public TpsHud(PlayerRef playerRef) {
-        super(playerRef, "TpsHud");
+        super(playerRef, HUD_ID);
     }
 
     @Override
