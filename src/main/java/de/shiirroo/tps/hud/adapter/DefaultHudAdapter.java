@@ -9,12 +9,12 @@ import org.jetbrains.annotations.NotNull;
 
 class DefaultHudAdapter implements HudAdapter {
     public void setCustomHud (@NonNullDecl Player player, @NonNullDecl PlayerRef playerRef, @NonNullDecl String hudIdentifier, @NonNullDecl CustomUIHud hud) {
-        player.getHudManager().setCustomHud(playerRef, hud);
+        player.getHudManager().addCustomHud(playerRef, hud);
     }
 
     @Override
     public void updatePlayerHud(@NotNull Player player,String hudIdentifier) {
-        var hud = player.getHudManager().getCustomHud();
+        var hud = player.getHudManager().getCustomHud(hudIdentifier);
         if (hud instanceof TpsHud tpsHud) {
             tpsHud.updatePlayerHud(player);
         }

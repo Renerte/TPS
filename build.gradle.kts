@@ -4,7 +4,6 @@ import kotlin.repeat
 plugins {
     id("java-library")
     id("com.gradleup.shadow") version "9.3.1"
-    id("run-hytale")
 }
 
 group = findProperty("pluginGroup") as String? ?: "com.example"
@@ -12,13 +11,14 @@ version = findProperty("pluginVersion") as String? ?: "1.0.0"
 description = findProperty("pluginDescription") as String? ?: "A Hytale plugin template"
 
 repositories {
-    mavenLocal()
     mavenCentral()
+    maven {
+        url = uri("https://maven.hytale.com/release")
+    }
 }
 
 dependencies {
-    compileOnly(files("C:/Users/Patrick/AppData/Roaming/Hytale/install/release/package/game/latest/Server/HytaleServer.jar"))
-
+    compileOnly("com.hypixel.hytale:Server:+")
     compileOnly(fileTree("libs") { include("*.jar") })
 
     implementation("org.jetbrains:annotations:24.1.0")
@@ -32,19 +32,8 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    testCompileOnly("org.projectlombok:lombok:1.18.42")
-    testAnnotationProcessor("org.projectlombok:lombok:1.18.42")
-}
-
-artifacts {
-    archives(file("C:/Users/Patrick/AppData/Roaming/Hytale/install/release/package/game/latest/Server/HytaleServer-sources.jar")) {
-        classifier = "sources"
-    }
-}
-
-
-runHytale {
-    serverFolder = "file:///C:/Users/Patrick/AppData/Roaming/Hytale/install/release/package/game/latest/Server/"
+//    testCompileOnly("org.projectlombok:lombok:1.18.42")
+//    testAnnotationProcessor("org.projectlombok:lombok:1.18.42")
 }
 
 tasks {

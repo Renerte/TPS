@@ -15,7 +15,7 @@ public class TpsHud extends CustomUIHud {
 
 
     public TpsHud(PlayerRef playerRef) {
-        super(playerRef);
+        super(playerRef, "TpsHud");
     }
 
     @Override

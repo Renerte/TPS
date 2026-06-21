@@ -1,12 +1,16 @@
 {
   "Group": "Shiirroo",
   "Name": "TPS",
-  "Version": "1.1.0",
+  "Version": "1.2.0",
   "Description": "Displays real-time and averaged TPS/MSPT per world.",
   "Authors": [
     {
       "Name": "Shiirroo",
       "Url": "https://github.com/Shiirroo/TPS"
+    },
+    {
+      "Name": "Renerte",
+      "Url": "https://renerte.net"
     }
   ],
   "Main": "de.shiirroo.tps.Tps",

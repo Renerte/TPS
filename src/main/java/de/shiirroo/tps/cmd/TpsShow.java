@@ -6,6 +6,7 @@ import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
 import com.hypixel.hytale.server.core.entity.entities.Player;
+import com.hypixel.hytale.server.core.permissions.PermissionsModule;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
@@ -36,15 +37,15 @@ public class TpsShow extends AbstractPlayerCommand {
                 Tps.getLog().warning("Player not found");
                 return;
             }
-            if (!player.hasPermission("tps.command.tps.show")) {
-                player.sendMessage(Message.raw("You don't have permission to use this command.").color(Color.RED));
+            if (!PermissionsModule.get().hasPermission(playerRef.getUuid(), "tps.command.tps.show")) {
+                playerRef.sendMessage(Message.raw("You don't have permission to use this command.").color(Color.RED));
                 return;
             }
             boolean toggleTo = tpsManager.getTaskManager().getHudTask().toggleEffectPlayer(player, playerRef);
             if (toggleTo) {
-                player.sendMessage(Message.raw("TPS HUD enabled").color(Color.GREEN));
+                playerRef.sendMessage(Message.raw("TPS HUD enabled").color(Color.GREEN));
             } else {
-                player.sendMessage(Message.raw("TPS HUD disabled").color(Color.RED));
+                playerRef.sendMessage(Message.raw("TPS HUD disabled").color(Color.RED));
             }
 
         }

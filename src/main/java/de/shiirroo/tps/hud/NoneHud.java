@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 public class NoneHud extends CustomUIHud {
 
     public NoneHud(PlayerRef playerRef) {
-        super(playerRef);
+        super(playerRef, "TpsHud");
     }
 
     @Override

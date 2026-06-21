@@ -6,6 +6,7 @@ import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
 import com.hypixel.hytale.server.core.entity.entities.Player;
+import com.hypixel.hytale.server.core.permissions.PermissionsModule;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
@@ -33,8 +34,8 @@ public class TpsGui extends AbstractPlayerCommand {
     ) {
         Player player = store.getComponent(ref, Player.getComponentType());
         if (player == null) return;
-        if (!player.hasPermission("tps.command.tps.gui")) {
-            player.sendMessage(Message.parse("You don't have permission to use this command."));
+        if (!PermissionsModule.get().hasPermission(playerRef.getUuid(), "tps.command.tps.gui")) {
+            playerRef.sendMessage(Message.parse("You don't have permission to use this command."));
             return;
         }
         if (player.getWorld() == null) return;
