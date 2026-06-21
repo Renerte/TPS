@@ -26,11 +26,11 @@ public class WarningTask implements TpsTaskRunnable {
     @Override
     public void run() {
         if (Tps.get().getConfig().get().isEnableTPSWarning()) {
-            sendTPSWaring();
+            sendTPSWarning();
         }
     }
 
-    private void sendTPSWaring(){
+    private void sendTPSWarning(){
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastWarningTime < WARNING_COOLDOWN_MS) return;
 
