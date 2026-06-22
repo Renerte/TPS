@@ -35,7 +35,7 @@ public class TaskManager implements IManager {
         var config = Tps.get().getConfig().get();
         createTask(guiTask);
         createTask(hudTask);
-        if (config.getMetricsConfig().isEnableMetrics())  createTask(metricsTask);
+        if (config.getMetricsConfig().isEnableMetrics()) createTask(metricsTask);
         if (config.isEnableTPSWarning()) createTask(warningTask);
 
     }
@@ -51,7 +51,7 @@ public class TaskManager implements IManager {
         var se = HytaleServer.SCHEDULED_EXECUTOR;
         WatchGuardTask watchGuardTask = new WatchGuardTask(task);
         try {
-            ScheduledFuture<?> future = se.scheduleAtFixedRate(watchGuardTask, 0, Tasks.getTaskUpdateInterval(task),  TimeUnit.MILLISECONDS);
+            ScheduledFuture<?> future = se.scheduleAtFixedRate(watchGuardTask, 0, Tasks.getTaskUpdateInterval(task), TimeUnit.MILLISECONDS);
             tasks.put(task, future);
         } catch (Exception e) {
             Tps.getLog().severe("Failed to start task: " + e.getMessage());
@@ -79,7 +79,6 @@ public class TaskManager implements IManager {
 
 
     }
-
 
 
 }

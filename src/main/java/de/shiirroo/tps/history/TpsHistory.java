@@ -16,6 +16,10 @@ public class TpsHistory {
     public TpsHistory() {
     }
 
+    public static TpsHistory getTPSHistory() {
+        return Tps.get().getTpsManager().getTaskManager().getMetricsTask().getTpsHistory();
+    }
+
     public void addMetrics(World world, MetricsTime time, WorldMetrics metrics) {
         addMetrics(world.getName(), world.getWorldConfig().getUuid(), time, metrics);
     }
@@ -38,10 +42,6 @@ public class TpsHistory {
 
     public String latestMetricsAsJson() {
         return history.values().stream().map(TpsWorldHistory::getLatestMetrics).map(TpsWorldHistory::toJson).collect(java.util.stream.Collectors.joining(",", "[", "]"));
-    }
-
-    public static TpsHistory getTPSHistory() {
-       return Tps.get().getTpsManager().getTaskManager().getMetricsTask().getTpsHistory();
     }
 
 

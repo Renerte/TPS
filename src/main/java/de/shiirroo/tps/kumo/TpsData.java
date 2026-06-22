@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class TpsData implements Serializable {
-    
+
 
     @Getter
     private final ArrayList<TpsMetrics> tpsData;
@@ -17,20 +17,20 @@ public class TpsData implements Serializable {
         this.tpsData = tpsData;
     }
 
+    public static String toJson(TpsMetrics data) {
+        return GsonHelper.GSON.toJson(data);
+    }
+
     @Override
     public String toString() {
         return "TpsData{" +
                 "tpsData=" + tpsData +
                 '}';
     }
-    public String toJson(){
+
+    public String toJson() {
         return GsonHelper.GSON.toJson(this);
     }
-
-    public static String toJson(TpsMetrics data) {
-        return GsonHelper.GSON.toJson(data);
-    }
-
 
 
 }

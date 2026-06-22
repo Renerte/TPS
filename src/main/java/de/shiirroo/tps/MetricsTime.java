@@ -9,13 +9,11 @@ import lombok.Getter;
 import java.util.HashMap;
 import java.util.List;
 
-public enum MetricsTime  {
+public enum MetricsTime {
     NOW(0, 1, 20, "Now"),
     TEN_SECONDS(0, 10, 10, "10s"),
     ONE_MINUTE(1, 60, 10, "1m "),
-    FIVE_MINUTES(2, 300, 10, "5m ")
-
-    ;
+    FIVE_MINUTES(2, 300, 10, "5m ");
 
     @Getter
     private final int index;
@@ -33,23 +31,9 @@ public enum MetricsTime  {
         this.display = display;
     }
 
-    public double getTps(World world) {
-       return TpsHelper.getTPS(world, this);
-    }
-
-    public double getMspt(World world) {
-        return TpsHelper.getMspt(world, this);
-    }
-
     public static List<MetricsTime> getMetricsTimeList() {
         return List.of(MetricsTime.values());
     }
-
-    public int maxRecords(Config<TPSConfig> config) {
-        return config.get().getMetricsConfig().getMetricsHistorySize(this);
-    }
-
-
 
     public static HashMap<Integer, Double[]> getAllTpsMpst(World world) {
         HashMap<Integer, Double[]> tpsMap = new HashMap<>();
@@ -65,7 +49,7 @@ public enum MetricsTime  {
     public static HashMap<Integer, Double[]> getAllTpsMpst(MetricsTime ignore, World world) {
         HashMap<Integer, Double[]> tpsMap = new HashMap<>();
         for (MetricsTime mt : MetricsTime.values()) {
-            if(mt == ignore) continue;
+            if (mt == ignore) continue;
             tpsMap.put(mt.getSeconds(), new Double[]{
                     TpsHelper.getTPS(world, mt),
                     TpsHelper.getMspt(world, mt)
@@ -74,7 +58,17 @@ public enum MetricsTime  {
         return tpsMap;
     }
 
+    public double getTps(World world) {
+        return TpsHelper.getTPS(world, this);
+    }
 
+    public double getMspt(World world) {
+        return TpsHelper.getMspt(world, this);
+    }
+
+    public int maxRecords(Config<TPSConfig> config) {
+        return config.get().getMetricsConfig().getMetricsHistorySize(this);
+    }
 
     public Double[] getTpsMspt(World world) {
         return new Double[]{
@@ -82,10 +76,6 @@ public enum MetricsTime  {
                 TpsHelper.getMspt(world, this)
         };
     }
-
-
-
-
 
 
 }

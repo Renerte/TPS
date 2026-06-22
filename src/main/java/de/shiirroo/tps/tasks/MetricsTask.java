@@ -19,15 +19,15 @@ public class MetricsTask implements TpsTaskRunnable {
 
     @Getter
     private final EnumMap<MetricsTime, Integer> metricsUpdateTime = new EnumMap<>(MetricsTime.class);
-    private TPSWebsocket tpsWebsocket;
     @Getter
     private final TpsHistory tpsHistory = new TpsHistory();
     @Getter
     private final Tasks task = Tasks.METRICS;
+    private TPSWebsocket tpsWebsocket;
 
     private boolean checkRange(int currentIndex, MetricsTime mt) {
         Integer last = metricsUpdateTime.getOrDefault(mt, 0);
-        boolean isInRange = currentIndex  <= last;
+        boolean isInRange = currentIndex <= last;
         if (!isInRange) metricsUpdateTime.put(mt, currentIndex);
         return isInRange;
     }
@@ -35,7 +35,7 @@ public class MetricsTask implements TpsTaskRunnable {
 
     @Override
     public void run() {
-        if (Tps.get().getConfig().get().getMetricsConfig().isEnableMetrics())  updateTpsHistory();
+        if (Tps.get().getConfig().get().getMetricsConfig().isEnableMetrics()) updateTpsHistory();
     }
 
 
@@ -45,7 +45,7 @@ public class MetricsTask implements TpsTaskRunnable {
             ZonedDateTime now = ZonedDateTime.now();
             ArrayList<TpsMetrics> newRecords = new ArrayList<>();
             MetricsTime[] metricsTimes = getMetricsTimes(secondOfDay);
-            if (metricsTimes.length > 0)  newRecords = getLatestMetrics(metricsTimes, now);
+            if (metricsTimes.length > 0) newRecords = getLatestMetrics(metricsTimes, now);
             TpsData dataDTO = new TpsData(newRecords);
             handleWebsocket(dataDTO);
 

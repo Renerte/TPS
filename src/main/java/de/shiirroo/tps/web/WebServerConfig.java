@@ -21,8 +21,12 @@ public class WebServerConfig {
                     (WebServerConfig, BindIP) -> WebServerConfig.HttpOnly).add()
             .build();
 
-    @Getter private boolean EnableWebServer = false;
-    @Getter private String BindIP = "0.0.0.0";
-    @Getter private Integer Port = 3001;
-    @Getter private boolean HttpOnly = true;
+    @Getter
+    private boolean EnableWebServer = false;
+    @Getter
+    private String BindIP = "0.0.0.0";
+    @Getter
+    private Integer Port = 3001;
+    @Getter
+    private boolean HttpOnly = true;
 }

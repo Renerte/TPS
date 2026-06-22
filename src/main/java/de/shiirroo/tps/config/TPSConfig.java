@@ -29,12 +29,13 @@ public class TPSConfig {
                     (TPSConfig, extraInfo) -> TPSConfig.WebServerConfig).add()
 
 
-
             .build();
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private MetricsConfig MetricsConfig = new MetricsConfig();
-    @Getter @Setter
+    @Getter
+    @Setter
     private boolean EnableTPSWarning = true;
     @Getter
     private double WarningThreshold = 20.0;

@@ -53,7 +53,7 @@ public class TpsCommand extends CommandBase {
             Message targetMspt = Message.raw(String.format("%.2f ", TpsHelper.getMaxMSPT(world))).color(Color.red);
             Message msptLabel = Message.raw("ms");
             //Live TPS / MSPT
-            Message live  = Message.raw("             Live => ");
+            Message live = Message.raw("             Live => ");
             Message liveTpsMessage = TpsHelper.colorizeTps(liveTps, world.getTps());
             Message liveMsptMessage = TpsHelper.colorizeMspt(TpsHelper.getLiveMspt(world), maxMSPT);
 
@@ -67,8 +67,6 @@ public class TpsCommand extends CommandBase {
 
         });
     }
-
-
 
 
 }

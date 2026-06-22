@@ -18,10 +18,10 @@ import java.util.UUID;
 
 public class WarningTask implements TpsTaskRunnable {
 
-    private long lastWarningTime = 0;
     private static final long WARNING_COOLDOWN_MS = 59 * 1000;
     @Getter
     private final Tasks task = Tasks.WARNING;
+    private long lastWarningTime = 0;
 
     @Override
     public void run() {
@@ -30,7 +30,7 @@ public class WarningTask implements TpsTaskRunnable {
         }
     }
 
-    private void sendTPSWarning(){
+    private void sendTPSWarning() {
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastWarningTime < WARNING_COOLDOWN_MS) return;
 
@@ -43,7 +43,7 @@ public class WarningTask implements TpsTaskRunnable {
                     Player player = ref.getStore().getComponent(ref, Player.getComponentType());
                     if (player == null) continue;
                     UUID playerUuid = playerRef.getUuid();
-                    if (PermissionsModule.get().hasPermission(playerUuid, "*") || PermissionsModule.get().hasPermission(playerUuid, "tps.command.tps.warning")){
+                    if (PermissionsModule.get().hasPermission(playerUuid, "*") || PermissionsModule.get().hasPermission(playerUuid, "tps.command.tps.warning")) {
                         sendWarningToPlayer(playerRef, worldName, currentMetrics.getTps());
                     }
                 }

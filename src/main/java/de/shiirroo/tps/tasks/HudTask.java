@@ -22,6 +22,7 @@ public class HudTask extends AbPlayerTask {
     public void run() {
         updatePlayers(this::updateHud);
     }
+
     private void updateHud(Player player, World world) {
         var hud = player.getHudManager().getCustomHud(HUD_ID);
         if (hud instanceof TpsHud tpsHud) {

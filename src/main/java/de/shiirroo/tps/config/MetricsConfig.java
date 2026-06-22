@@ -28,9 +28,13 @@ public class MetricsConfig {
                     (MetricsConfig, extraInfo) -> MetricsConfig.TaskUpdateIntervals).add()
 
             .build();
-
-
-
+    @Getter
+    @Setter
+    private boolean EnableMetrics = false;
+    @Getter
+    private Map<MetricsTime, Integer> MetricsHistorySize = new EnumMap<>(MetricsTime.class);
+    @Getter
+    private Map<Tasks, Integer> TaskUpdateIntervals = new EnumMap<>(Tasks.class);
     public MetricsConfig() {
         for (MetricsTime time : MetricsTime.values()) {
             MetricsHistorySize.put(time, time.getDefaultMaxRecords());
@@ -40,14 +44,6 @@ public class MetricsConfig {
         }
 
     }
-
-
-    @Getter @Setter
-    private boolean EnableMetrics = false;
-    @Getter
-    private Map<MetricsTime , Integer> MetricsHistorySize = new EnumMap<>(MetricsTime.class);
-    @Getter
-    private Map<Tasks, Integer> TaskUpdateIntervals = new EnumMap<>(Tasks.class);
 
     public Integer getMetricsHistorySize(MetricsTime time) {
         return MetricsHistorySize.getOrDefault(time, time.getDefaultMaxRecords());

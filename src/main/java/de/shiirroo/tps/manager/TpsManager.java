@@ -12,9 +12,9 @@ public class TpsManager implements IManager {
 
     @Getter
     private final Config<TPSConfig> settings;
-    private TPSWebsocket tpsWebsocket;
     @Getter
     private final TaskManager taskManager;
+    private TPSWebsocket tpsWebsocket;
 
     public TpsManager(Config<TPSConfig> settings) {
         this.settings = settings;
@@ -34,7 +34,7 @@ public class TpsManager implements IManager {
     }
 
     public void initializeKumoWebSocket() {
-        if(settings.get().getKumoConfig().isEnableKumoSupport()) {
+        if (settings.get().getKumoConfig().isEnableKumoSupport()) {
             try {
                 tpsWebsocket = new TPSWebsocket(URI.create(settings.get().getKumoConfig().getKumoURL()), settings);
                 tpsWebsocket.connect();

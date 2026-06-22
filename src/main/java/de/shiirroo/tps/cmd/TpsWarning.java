@@ -27,7 +27,7 @@ public class TpsWarning extends AbstractAsyncCommand {
             paramCommandContext.sender().sendMessage(Message.parse("You don't have permission to use this command."));
             return CompletableFuture.completedFuture(null);
         }
-        var bool =  tpsManager.getSettings().get().isEnableTPSWarning();
+        var bool = tpsManager.getSettings().get().isEnableTPSWarning();
         tpsManager.getSettings().get().setEnableTPSWarning(!bool);
         paramCommandContext.sendMessage(Message.raw("TPS Warning set to: " + !bool));
         tpsManager.getTaskManager().updateTask(bool, tpsManager.getTaskManager().getWarningTask());

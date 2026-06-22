@@ -49,7 +49,7 @@ public class TpsHud extends CustomUIHud {
         }
         double liveTps = TpsHelper.getLiveTPS(world);
         double maxMSPT = TpsHelper.getMaxMSPT(world);
-        Message live  = Message.raw("TPS: ");
+        Message live = Message.raw("TPS: ");
         Message liveTpsMessage = TpsHelper.colorizeTps(liveTps, world.getTps());
         Message liveMsptMessage = TpsHelper.colorizeMspt(TpsHelper.getLiveMspt(world), maxMSPT);
         Message msptlabel = Message.raw("MSPT: ");

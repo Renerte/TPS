@@ -35,16 +35,6 @@ public class TpsGuiPage extends InteractiveCustomUIPage<TpsGuiPage.CloseEventDat
         this.ten_sec_avgerage_tps = tenSecAvgerageTps;
     }
 
-    /**
-     * Empty EventData - we only need to handle the close button.
-     * No fields, just an empty codec.
-     */
-    public static class CloseEventData {
-        public static final BuilderCodec<CloseEventData> CODEC =
-                BuilderCodec.builder(CloseEventData.class, CloseEventData::new)
-                        .build();
-    }
-
     public TpsGuiPage(@Nonnull PlayerRef playerRef, double live_tps, double live_mspt) {
         super(playerRef, CustomPageLifetime.CanDismissOrCloseThroughInteraction, CloseEventData.CODEC);
         this.live_tps = live_tps;
@@ -62,11 +52,10 @@ public class TpsGuiPage extends InteractiveCustomUIPage<TpsGuiPage.CloseEventDat
     public void handleDataEvent(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, @Nonnull CloseEventData data) {
         Player player = store.getComponent(ref, Player.getComponentType());
         if (player == null) return;
-        
+
         Tps.get().getTpsManager().getTaskManager().getGuiTask().removeEffectPlayer(player, this.playerRef);
         player.getPageManager().setPage(ref, store, Page.None);
     }
-
 
     private void updateValues(UICommandBuilder cmd, UIEventBuilder evt) {
         cmd.set("#TpsValue.Text", String.valueOf(live_tps));
@@ -74,7 +63,7 @@ public class TpsGuiPage extends InteractiveCustomUIPage<TpsGuiPage.CloseEventDat
 
         //cmd.set("#TenSecondCurrentTps.Text", "Current: " + String.format("%.2f ms", ten_sec_avgerage_tps));
 
-       // cmd.set("#TenSecondAverageTps.Text", "Ø " + ten_sec_current_tps);
+        // cmd.set("#TenSecondAverageTps.Text", "Ø " + ten_sec_current_tps);
 
         evt.addEventBinding(CustomUIEventBindingType.Activating, "#CloseButton");
 
@@ -90,5 +79,15 @@ public class TpsGuiPage extends InteractiveCustomUIPage<TpsGuiPage.CloseEventDat
         UIEventBuilder evt = new UIEventBuilder();
         updateValues(cmd, evt);
         this.sendUpdate(cmd, evt, false);
+    }
+
+    /**
+     * Empty EventData - we only need to handle the close button.
+     * No fields, just an empty codec.
+     */
+    public static class CloseEventData {
+        public static final BuilderCodec<CloseEventData> CODEC =
+                BuilderCodec.builder(CloseEventData.class, CloseEventData::new)
+                        .build();
     }
 }

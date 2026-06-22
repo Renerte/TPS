@@ -74,6 +74,7 @@ public class TpsHelper {
         double avgTickNanos = metrics.getAverage(metricsTime.getIndex());
         return avgTickNanos / MS;
     }
+
     public static double getMaxMSPT(World world) {
         return world.getTickStepNanos() / MS;
     }
@@ -98,7 +99,6 @@ public class TpsHelper {
     public static TpsHistory getTPSHistory() {
         return TpsHistory.getTPSHistory();
     }
-
 
 
 }

@@ -28,8 +28,8 @@ import java.util.Date;
 
 public class WebServer {
 
-    private HttpServer server;
     private static final WebServer instance = new WebServer();
+    private HttpServer server;
 
     public static WebServer get() {
         return instance;
@@ -39,16 +39,16 @@ public class WebServer {
         try {
             var config = Tps.get().getConfig().get().getWebServerConfig();
             server = config.isHttpOnly() ? createHttpServer(config) : createHttpsServer(config);
-                server.createContext("/Shiirroo/TPS", exchange -> {
-                    var query = exchange.getRequestURI().getQuery();
-                    String history = TpsHistory.getTPSHistory().getQueryMetricsAsJson(query);
-                    exchange.getResponseHeaders().set("Content-Type", "application/json; charset=utf-8");
-                    exchange.sendResponseHeaders(200, history.getBytes().length);
-                    exchange.getResponseBody().write(history.getBytes());
-                    exchange.close();
+            server.createContext("/Shiirroo/TPS", exchange -> {
+                var query = exchange.getRequestURI().getQuery();
+                String history = TpsHistory.getTPSHistory().getQueryMetricsAsJson(query);
+                exchange.getResponseHeaders().set("Content-Type", "application/json; charset=utf-8");
+                exchange.sendResponseHeaders(200, history.getBytes().length);
+                exchange.getResponseBody().write(history.getBytes());
+                exchange.close();
             });
             server.start();
-            Tps.getLog().info("DefaultWebAdapter: Started embedded "+ (config.isHttpOnly() ? "http" :"https" )+ " server on " + config.getBindIP() + ":" + config.getPort());
+            Tps.getLog().info("DefaultWebAdapter: Started embedded " + (config.isHttpOnly() ? "http" : "https") + " server on " + config.getBindIP() + ":" + config.getPort());
         } catch (Exception e) {
             Tps.getLog().severe("DefaultWebAdapter: Failed to start embedded HTTP server: " + e.getMessage());
         }
@@ -80,7 +80,7 @@ public class WebServer {
         KeyStore ks = KeyStore.getInstance("JKS");
         ks.load(null, null);
 
-        var pass  = Utilities.randomPassword(100);
+        var pass = Utilities.randomPassword(100);
         ks.setKeyEntry("alias", keyPair.getPrivate(), pass, new Certificate[]{cert});
 
         KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
@@ -102,7 +102,7 @@ public class WebServer {
     }
 
 
-    private  HttpServer createHttpServer(WebServerConfig config) throws IOException {
+    private HttpServer createHttpServer(WebServerConfig config) throws IOException {
         return HttpServer.create(new InetSocketAddress(config.getBindIP(), config.getPort()), 0);
     }
 

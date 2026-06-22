@@ -26,6 +26,10 @@ public class TpsWorldHistory implements Serializable {
         this.worldUUID = worldUUID.toString();
     }
 
+    public static String toJson(TpsMetrics data) {
+        return GsonHelper.GSON.toJson(data);
+    }
+
     public void addWorldMetrics(MetricsTime metricsTime, WorldMetrics metrics) {
         ArrayList<WorldMetrics> list = worldMetricsMap.computeIfAbsent(metricsTime, k -> new ArrayList<>());
         var configMaxRecords = Tps.get().getConfig().get().getMetricsConfig().getMetricsHistorySize(metricsTime);
@@ -37,7 +41,6 @@ public class TpsWorldHistory implements Serializable {
     public ArrayList<WorldMetrics> getWorldMetrics(MetricsTime metricsTime) {
         return worldMetricsMap.get(metricsTime);
     }
-
 
     public HashMap<MetricsTime, ArrayList<WorldMetrics>> getWorldMetricsMap() {
         return new HashMap<>(worldMetricsMap);
@@ -54,11 +57,8 @@ public class TpsWorldHistory implements Serializable {
         return latestMetrics;
     }
 
-    public String toJson(){
+    public String toJson() {
         return GsonHelper.GSON.toJson(this);
-    }
-    public static String toJson(TpsMetrics data) {
-        return GsonHelper.GSON.toJson(data);
     }
 
 }

@@ -1,6 +1,7 @@
 # Hytale TPS Monitor Mod
 
-This mod provides detailed **TPS (Ticks Per Second) and MSPT (Milliseconds Per Tick) monitoring** for each world on a Hytale server.
+This mod provides detailed **TPS (Ticks Per Second) and MSPT (Milliseconds Per Tick) monitoring** for each world on a
+Hytale server.
 
 ## Features
 
@@ -10,7 +11,7 @@ This mod provides detailed **TPS (Ticks Per Second) and MSPT (Milliseconds Per T
 - Provides **average TPS** over the last **10 seconds, 1 minute, and 5 minutes**.
 - If the server has not been running long enough, averages are calculated using the available runtime.
 - Supports a **live on-screen display** for continuous TPS & MSPT monitoring.
-  - Works standalone or alongside MultiHUD
+    - Works standalone or alongside MultiHUD
 
 ![TPS Monitor Screenshot](img/tps_screenshot.png)
 

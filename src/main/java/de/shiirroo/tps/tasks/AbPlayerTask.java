@@ -34,13 +34,10 @@ public abstract class AbPlayerTask implements TpsTaskRunnable {
     }
 
     public abstract boolean addEffectPlayer(Player player, PlayerRef playerRef);
+
     public abstract boolean removeEffectPlayer(Player player, PlayerRef playerRef);
+
     public abstract boolean toggleEffectPlayer(Player player, PlayerRef playerRef);
-
-
-
-
-
 
 
 }

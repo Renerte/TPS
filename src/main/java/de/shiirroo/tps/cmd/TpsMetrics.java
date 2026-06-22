@@ -29,7 +29,7 @@ public class TpsMetrics extends AbstractAsyncCommand {
         }
 
 
-        var bool =  tpsManager.getSettings().get().getMetricsConfig().isEnableMetrics();
+        var bool = tpsManager.getSettings().get().getMetricsConfig().isEnableMetrics();
         tpsManager.getSettings().get().getMetricsConfig().setEnableMetrics(!bool);
         paramCommandContext.sendMessage(Message.raw("TPS metrics set to: " + !bool));
         tpsManager.getTaskManager().updateTask(bool, tpsManager.getTaskManager().getMetricsTask());

@@ -49,7 +49,7 @@ public final class TPSWebsocket extends WebSocketClient {
 
     public void sendTPS(TpsData tps) {
         if (isOpen()) {
-           send(tps.toJson());
+            send(tps.toJson());
         }
     }
 }

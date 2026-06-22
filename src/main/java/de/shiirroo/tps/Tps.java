@@ -18,12 +18,12 @@ import java.util.logging.Logger;
 
 public class Tps extends JavaPlugin {
 
+    @Getter
+    private static final Logger log = Logger.getLogger(Tps.class.getName());
     private static Tps instance;
     public final String PREFIX = "[Tps] ";
     @Getter
     private final TpsManager tpsManager;
-    @Getter
-    private static final Logger log = Logger.getLogger(Tps.class.getName());
     @Getter
     private final Config<TPSConfig> config;
 
@@ -35,6 +35,9 @@ public class Tps extends JavaPlugin {
         this.tpsManager = new TpsManager(config);
     }
 
+    public static Tps get() {
+        return instance;
+    }
 
     protected void setup() {
         this.config.save();
@@ -42,7 +45,7 @@ public class Tps extends JavaPlugin {
         getCommandRegistry().registerCommand(new TpsCommand());
         Logger.getLogger(Tps.class.getName()).log(Level.INFO, PREFIX + "Plugin enabled!!");
         tpsManager.initialize();
-        if(this.config.get().getWebServerConfig().isEnableWebServer()) WebServer.get().registerWebServer();
+        if (this.config.get().getWebServerConfig().isEnableWebServer()) WebServer.get().registerWebServer();
     }
 
     @Override
@@ -55,11 +58,7 @@ public class Tps extends JavaPlugin {
         Logger.getLogger(Tps.class.getName()).log(Level.INFO, PREFIX + "Plugin shutdown!!");
         tpsManager.shutdown();
 
-        if(this.config.get().getWebServerConfig().isEnableWebServer()) WebServer.get().unregisterWebServer();
-    }
-
-    public static Tps get() {
-        return instance;
+        if (this.config.get().getWebServerConfig().isEnableWebServer()) WebServer.get().unregisterWebServer();
     }
 
     private void handlePlayerLeave() {

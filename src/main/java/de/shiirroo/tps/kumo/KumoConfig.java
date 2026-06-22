@@ -19,18 +19,19 @@ public class KumoConfig {
                     (KumoConfig, newKey, extraInfo) -> KumoConfig.KumoKey = newKey,
                     (KumoConfig, extraInfo) -> KumoConfig.KumoKey).add()
             .build();
-
+    @Getter
+    @Setter
+    private boolean EnableKumoSupport = false;
+    @Getter
+    @Setter
+    private String KumoURL = "https://localhost:3001/NOT_SUPPORTED_YET/";
+    @Getter
+    @Setter
+    private String KumoKey = "DEFAULT_KEY_CHANGE_THIS";
 
     public static String KumoWebsocketPath(KumoConfig kumoConfig) {
         return kumoConfig.getKumoURL() + "ws";
     }
-
-    @Getter @Setter
-    private boolean EnableKumoSupport = false;
-    @Getter @Setter
-    private String KumoURL = "https://localhost:3001/NOT_SUPPORTED_YET/";
-    @Getter @Setter
-    private String KumoKey = "DEFAULT_KEY_CHANGE_THIS";
 
 
 }

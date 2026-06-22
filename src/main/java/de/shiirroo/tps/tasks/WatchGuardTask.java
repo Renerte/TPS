@@ -6,10 +6,10 @@ import java.util.logging.Logger;
 
 public class WatchGuardTask implements Runnable {
 
+    private static final int MAX_RETRIES = 3;
     @Getter
     private final TpsTaskRunnable task;
     private final Logger logger = Logger.getLogger(WatchGuardTask.class.getName());
-    private static final int MAX_RETRIES = 3;
     private int retryCount = 0;
 
 
@@ -26,6 +26,7 @@ public class WatchGuardTask implements Runnable {
             retry();
         }
     }
+
     private void retry() {
         if (retryCount < MAX_RETRIES) {
             retryCount++;
