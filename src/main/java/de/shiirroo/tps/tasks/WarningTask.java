@@ -34,23 +34,21 @@ public class WarningTask implements TpsTaskRunnable {
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastWarningTime < WARNING_COOLDOWN_MS) return;
 
-        Universe.get().getWorlds().forEach((worldName, world) -> {
-            world.execute(() -> {
-                WorldMetrics currentMetrics = new WorldMetrics(world, MetricsTime.TEN_SECONDS);
-                if (currentMetrics.getTps() < Tps.get().getConfig().get().getWarningThreshold()) {
-                    for (PlayerRef playerRef : world.getPlayerRefs()) {
-                        Ref<EntityStore> ref = playerRef.getReference();
-                        if (ref == null) continue;
-                        Player player = ref.getStore().getComponent(ref, Player.getComponentType());
-                        if (player == null) continue;
-                        UUID playerUuid = playerRef.getUuid();
-                        if (PermissionsModule.get().hasPermission(playerUuid, "*") || PermissionsModule.get().hasPermission(playerUuid, "tps.command.tps.warning")){
-                            sendWarningToPlayer(playerRef, worldName, currentMetrics.getTps());
-                        }
+        Universe.get().getWorlds().forEach((worldName, world) -> world.execute(() -> {
+            WorldMetrics currentMetrics = new WorldMetrics(world, MetricsTime.TEN_SECONDS);
+            if (currentMetrics.getTps() < Tps.get().getConfig().get().getWarningThreshold()) {
+                for (PlayerRef playerRef : world.getPlayerRefs()) {
+                    Ref<EntityStore> ref = playerRef.getReference();
+                    if (ref == null) continue;
+                    Player player = ref.getStore().getComponent(ref, Player.getComponentType());
+                    if (player == null) continue;
+                    UUID playerUuid = playerRef.getUuid();
+                    if (PermissionsModule.get().hasPermission(playerUuid, "*") || PermissionsModule.get().hasPermission(playerUuid, "tps.command.tps.warning")){
+                        sendWarningToPlayer(playerRef, worldName, currentMetrics.getTps());
                     }
                 }
-            });
-        });
+            }
+        }));
         lastWarningTime = currentTime;
     }
 
