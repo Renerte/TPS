@@ -1,9 +1,6 @@
-
-import kotlin.repeat
-
 plugins {
     id("java-library")
-    id("com.gradleup.shadow") version "9.3.1"
+    id("com.gradleup.shadow") version "9.4.2"
 }
 
 group = findProperty("pluginGroup") as String? ?: "com.example"
@@ -19,7 +16,6 @@ repositories {
 
 dependencies {
     compileOnly("com.hypixel.hytale:Server:+")
-    compileOnly(fileTree("libs") { include("*.jar") })
 
     implementation("org.jetbrains:annotations:24.1.0")
     implementation("com.google.code.gson:gson:2.11.0")
@@ -32,8 +28,6 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-//    testCompileOnly("org.projectlombok:lombok:1.18.42")
-//    testAnnotationProcessor("org.projectlombok:lombok:1.18.42")
 }
 
 tasks {

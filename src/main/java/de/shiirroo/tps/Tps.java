@@ -8,7 +8,7 @@ import com.hypixel.hytale.server.core.util.Config;
 import de.shiirroo.tps.cmd.TpsCommand;
 import de.shiirroo.tps.config.TPSConfig;
 import de.shiirroo.tps.manager.TpsManager;
-import de.shiirroo.tps.web.adapter.WebAdapterSelector;
+import de.shiirroo.tps.web.WebServer;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -46,7 +46,7 @@ public class Tps extends JavaPlugin {
         getCommandRegistry().registerCommand(new TpsCommand());
         Logger.getLogger(Tps.class.getName()).log(Level.INFO, PREFIX + "Plugin enabled!!");
         tpsManager.initialize();
-        if(this.config.get().getWebServerConfig().isEnableWebServer()) WebAdapterSelector.get().registerWebServer();
+        if(this.config.get().getWebServerConfig().isEnableWebServer()) WebServer.get().registerWebServer();
     }
 
     @Override
@@ -62,7 +62,7 @@ public class Tps extends JavaPlugin {
         }
         tpsManager.shutdown();
 
-        if(this.config.get().getWebServerConfig().isEnableWebServer())   WebAdapterSelector.get().unregisterWebServer();
+        if(this.config.get().getWebServerConfig().isEnableWebServer()) WebServer.get().unregisterWebServer();
     }
 
     public static Tps get() {

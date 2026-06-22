@@ -1,4 +1,4 @@
-package de.shiirroo.tps.web.adapter;
+package de.shiirroo.tps.web;
 
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpsConfigurator;
@@ -7,7 +7,6 @@ import com.sun.net.httpserver.HttpsServer;
 import de.shiirroo.tps.Tps;
 import de.shiirroo.tps.helper.Utilities;
 import de.shiirroo.tps.history.TpsHistory;
-import de.shiirroo.tps.web.WebServerConfig;
 import lombok.Getter;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
@@ -28,13 +27,17 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Date;
 
-class DefaultWebAdapter implements WebAdapter {
+public class WebServer {
 
     @Getter
     private HttpServer server;
+    private static final WebServer instance = new WebServer();
+
+    public static WebServer get() {
+        return instance;
+    }
 
 
-    @Override
     public void registerWebServer() {
         try {
             var config = Tps.get().getConfig().get().getWebServerConfig();
@@ -54,7 +57,6 @@ class DefaultWebAdapter implements WebAdapter {
         }
     }
 
-    @Override
     public void unregisterWebServer() {
         if (server != null) {
             server.stop(0);
