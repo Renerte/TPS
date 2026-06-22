@@ -10,12 +10,9 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import de.shiirroo.tps.Tps;
 import de.shiirroo.tps.helper.TpsHelper;
-import lombok.Getter;
 
 public class TpsHud extends CustomUIHud {
-    @Getter
     public final static String HUD_ID = "TpsHud";
-
 
     public TpsHud(PlayerRef playerRef) {
         super(playerRef, HUD_ID);
@@ -60,8 +57,4 @@ public class TpsHud extends CustomUIHud {
         Message hud = live.insert(liveTpsMessage).insert(TpsHelper.spacer).insert(msptlabel).insert(liveMsptMessage);
         commandBuilder.set("#TPSLabel.TextSpans", Message.raw("").insert(hud));
     }
-
-
-
-
 }

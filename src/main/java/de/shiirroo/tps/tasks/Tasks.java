@@ -7,11 +7,8 @@ public enum Tasks {
     HUD(1000),
     GUI(1000),
     METRICS(1000),
-    WARNING(1000)
+    WARNING(1000);
 
-
-
-    ;
     @Getter
     private final Integer defaultTaskUpdateInterval;
 

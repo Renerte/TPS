@@ -12,7 +12,6 @@ import de.shiirroo.tps.web.WebServer;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,7 +19,6 @@ import java.util.logging.Logger;
 public class Tps extends JavaPlugin {
 
     private static Tps instance;
-    @Getter
     public final String PREFIX = "[Tps] ";
     @Getter
     private final TpsManager tpsManager;
@@ -28,8 +26,6 @@ public class Tps extends JavaPlugin {
     private static final Logger log = Logger.getLogger(Tps.class.getName());
     @Getter
     private final Config<TPSConfig> config;
-    @Getter
-    private ScheduledFuture<?> tpsTask;
 
     public Tps(@NotNull JavaPluginInit init) {
         super(init);
@@ -57,9 +53,6 @@ public class Tps extends JavaPlugin {
     @Override
     protected void shutdown() {
         Logger.getLogger(Tps.class.getName()).log(Level.INFO, PREFIX + "Plugin shutdown!!");
-        if (tpsTask != null && !tpsTask.isCancelled()) {
-            tpsTask.cancel(true);
-        }
         tpsManager.shutdown();
 
         if(this.config.get().getWebServerConfig().isEnableWebServer()) WebServer.get().unregisterWebServer();
@@ -71,9 +64,7 @@ public class Tps extends JavaPlugin {
 
     private void handlePlayerLeave() {
         getEventRegistry().register(
-                EventPriority.FIRST, PlayerDisconnectEvent.class, event -> {
-                    tpsManager.getTaskManager().getHudTask().removeEffectPlayer(event.getPlayerRef());
-                }
+                EventPriority.FIRST, PlayerDisconnectEvent.class, event -> tpsManager.getTaskManager().getHudTask().removeEffectPlayer(event.getPlayerRef())
         );
     }
 

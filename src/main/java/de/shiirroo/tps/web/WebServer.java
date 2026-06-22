@@ -7,7 +7,6 @@ import com.sun.net.httpserver.HttpsServer;
 import de.shiirroo.tps.Tps;
 import de.shiirroo.tps.helper.Utilities;
 import de.shiirroo.tps.history.TpsHistory;
-import lombok.Getter;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.bouncycastle.cert.X509v3CertificateBuilder;
@@ -29,14 +28,12 @@ import java.util.Date;
 
 public class WebServer {
 
-    @Getter
     private HttpServer server;
     private static final WebServer instance = new WebServer();
 
     public static WebServer get() {
         return instance;
     }
-
 
     public void registerWebServer() {
         try {

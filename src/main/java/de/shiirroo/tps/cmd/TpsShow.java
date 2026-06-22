@@ -12,14 +12,11 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import de.shiirroo.tps.Tps;
 import de.shiirroo.tps.manager.TpsManager;
-import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
 public class TpsShow extends AbstractPlayerCommand {
-
-    @Getter
     private final TpsManager tpsManager;
 
     public TpsShow(TpsManager tpsManager) {
